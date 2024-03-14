@@ -17,11 +17,18 @@ jobs:
         with:
           tf_actions_version: 1.7.4
           tf_actions_subcommand: 'init'
-          tf_actions_working_dir: '.'
+          tf_actions_working_dir: './infrastructure/bootstrap'
           tf_actions_comment: true
-          args: '-backend-config="token=${{ secrets.TF_API_TOKEN }}" -backend-config="organization=CHANGE_ME"'
+          # args: '-backend-config="token=${{ secrets.TF_API_TOKEN }}" -backend-config="organization=CHANGE_ME"'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OCI_CLI_USER: ${{ secrets.OCI_CLI_USER }}
+          OCI_CLI_TENANCY: ${{ secrets.OCI_CLI_TENANCY }}
+          OCI_CLI_FINGERPRINT: ${{ secrets.OCI_CLI_FINGERPRINT }}
+          OCI_CLI_KEY_CONTENT: ${{ secrets.OCI_CLI_KEY_CONTENT }}
+          OCI_CLI_REGION: ${{ secrets.OCI_CLI_REGION }}
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   # my-instances:
   #   runs-on: ubuntu-latest
