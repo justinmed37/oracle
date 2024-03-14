@@ -4,20 +4,23 @@ OCI infrastructure
 ## Notes
 
 ### Setup User API Key
-Login to oracle console
-Open user profile, generate the api key and download them
-Copy the contents of the private key .pem file into ~/.ssh/oci.pem
+
+1. Login to oracle console
+1. Open user profile, generate the api key and download them
+1. Copy the contents of the private key .pem file into ~/.ssh/oci.pem
 
 ### Setup OCI CLI for config file auth
-sudo apt install python3-pip
-python3 -m venv venv
-source venv/bin/activate
-python -m pip install oci-cli --upgrade
+
+1. ```sudo apt install python3-pip```
+1. python3 -m venv venv
+1. source venv/bin/activate
+1. python -m pip install oci-cli --upgrade
 
 
 ### Setup config file
-mkdir ~/.oci
-touch ~/.oci/config
-Paste in config file from oracle console to the config file
-Set the private key location to /home/$USER/.ssh/oci.pem
-export TF_VAR_config_file_profile="/home/$USER/.oci/config"
+
+1. ```mkdir ~/.oci```
+1. ```touch ~/.oci/config```
+1. Paste in config file from oracle console to the config file
+1. Set the private key location to /home/$USER/.ssh/oci.pem
+1. ```export TF_VAR_config_file_profile="/home/$USER/.oci/config"```
