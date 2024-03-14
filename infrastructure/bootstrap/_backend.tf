@@ -1,8 +1,7 @@
 terraform {
   backend "s3" {
     bucket    = "tfstate"
-    key       = "tf.tfstate"
-    workspace_key_prefix = "bootstrap"
+    key       = "bootstrap/tf.tfstate"
     region    = "us-ashburn-1"
     endpoints = { s3 = "https://idbjyurhyjpo.compat.objectstorage.us-ashburn-1.oraclecloud.com" }
     # shared_credentials_files     = ["$HOME/.aws/credentials"]
