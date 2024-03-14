@@ -12,9 +12,9 @@ OCI infrastructure
 ### Setup OCI CLI for config file auth
 
 1. ```sudo apt install python3-pip```
-1. python3 -m venv venv
-1. source venv/bin/activate
-1. python -m pip install oci-cli --upgrade
+1. ```python3 -m venv venv```
+1. ```source venv/bin/activate```
+1. ```python -m pip install oci-cli --upgrade```
 
 
 ### Setup config file
