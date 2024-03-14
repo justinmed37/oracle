@@ -4,6 +4,8 @@ on:
   pull_request:
     branches:
       - main
+  pull_request_review:
+    types: [edited, dismissed]
   workflow_dispatch:
 
 jobs:
