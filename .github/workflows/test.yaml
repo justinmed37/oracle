@@ -33,7 +33,7 @@ jobs:
         id: find-compartment-id
         with:
           command: 'iam compartment list --compartment-id-in-subtree=true'
-          query: "data[?name=='projectX'].id"
+          query: "data[?name=='justinmed37'].id"
 
           # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
