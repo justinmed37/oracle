@@ -30,12 +30,14 @@ jobs:
           # args: '-backend-config="token=${{ secrets.TF_API_TOKEN }}" -backend-config="organization=CHANGE_ME"'
       - name: Retrieve the OCID of a named compartment in tenancy
         uses: oracle-actions/run-oci-cli-command@v1.1.1
-        id: find-compartment-id
+        id: find-compartments
         with:
           command: 'iam compartment list --compartment-id-in-subtree=true'
           query: "data[?name=='justinmed37'].id"
+      - name: List Results
+        run: |
+          echo ${{ steps.find-compartments.outputs.output }} | jq .
 
-          # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   # my-instances:
   #   runs-on: ubuntu-latest
