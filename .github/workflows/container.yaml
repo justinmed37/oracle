@@ -47,7 +47,7 @@ jobs:
           image: generic/frontend
           tags: v0, latest
           registry: iad.ocir.io
-          directory: container
+          directory: ./container
           dockerfile: Dockerfile
           username: ${{ secrets.OCI_CR_PRINCIPAL }}
           password: ${{ secrets.OCI_CR_CREDENTIAL }}
