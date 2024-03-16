@@ -11,11 +11,11 @@ on:
 jobs:
   docker:
     runs-on: ubuntu-latest
-    env:
-      working-directory: ./container
-    defaults:
-      run:
-        working-directory: ${{ env.working-directory }}
+    # env:
+    #   working-directory: ./container
+    # defaults:
+    #   run:
+    #     working-directory: ${{ env.working-directory }}
     steps:
       -
         name: Checkout
@@ -33,23 +33,24 @@ jobs:
           registry: iad.ocir.io
           username: ${{ secrets.OCI_CR_PRINCIPAL }}
           password: ${{ secrets.OCI_CR_CREDENTIAL }}
-      # -
-        # name: Build and push
-        # uses: docker/build-push-action@v5
-        # with:
-        #   context: ./container
-        #   push: true
-        #   tags: generic/app:latest
-      - run: pwd
-      - run: ls
-      - 
-        name: Build & push Docker image
-        uses: mr-smithers-excellent/docker-build-push@v6
+      -
+        name: Build and push
+        uses: docker/build-push-action@v5
         with:
-          image: generic/frontend
-          tags: v0, latest
+          context: ./container
           registry: iad.ocir.io
-          # directory: ./container
-          dockerfile: Dockerfile
-          username: ${{ secrets.OCI_CR_PRINCIPAL }}
-          password: ${{ secrets.OCI_CR_CREDENTIAL }}
+          push: true
+          tags: generic/frontend:latest
+      # - run: pwd
+      # - run: ls
+      # - 
+      #   name: Build & push Docker image
+      #   uses: mr-smithers-excellent/docker-build-push@v6
+      #   with:
+      #     image: generic/frontend
+      #     tags: v0, latest
+      #     registry: iad.ocir.io
+      #     # directory: ./container
+      #     dockerfile: Dockerfile
+      #     username: ${{ secrets.OCI_CR_PRINCIPAL }}
+      #     password: ${{ secrets.OCI_CR_CREDENTIAL }}
