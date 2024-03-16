@@ -11,11 +11,11 @@ on:
 jobs:
   docker:
     runs-on: ubuntu-latest
-    env:
-      working-directory: ./container
-    defaults:
-      run:
-        working-directory: ${{ env.working-directory }}
+    # env:
+    #   working-directory: ./container
+    # defaults:
+    #   run:
+    #     working-directory: ${{ env.working-directory }}
     steps:
       -
         name: Checkout
@@ -30,6 +30,6 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: ./container
           push: false
           tags: generic/app:latest
