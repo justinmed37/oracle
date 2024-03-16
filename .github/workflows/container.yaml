@@ -11,11 +11,11 @@ on:
 jobs:
   docker:
     runs-on: ubuntu-latest
-    # env:
-    #   working-directory: ./container
-    # defaults:
-    #   run:
-    #     working-directory: ${{ env.working-directory }}
+    env:
+      working-directory: ./container
+    defaults:
+      run:
+        working-directory: ${{ env.working-directory }}
     steps:
       -
         name: Checkout
@@ -47,7 +47,7 @@ jobs:
           image: generic/frontend
           tags: v0, latest
           registry: iad.ocir.io
-          directory: ./container
+          # directory: ./container
           dockerfile: Dockerfile
           username: ${{ secrets.OCI_CR_PRINCIPAL }}
           password: ${{ secrets.OCI_CR_CREDENTIAL }}
