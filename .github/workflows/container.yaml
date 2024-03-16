@@ -34,9 +34,19 @@ jobs:
           username: ${{ secrets.OCI_CR_PRINCIPAL }}
           password: ${{ secrets.OCI_CR_CREDENTIAL }}
       -
-        name: Build and push
-        uses: docker/build-push-action@v5
+        # name: Build and push
+        # uses: docker/build-push-action@v5
+        # with:
+        #   context: ./container
+        #   push: true
+        #   tags: generic/app:latest
+      - 
+        name: Build & push Docker image
+        uses: mr-smithers-excellent/docker-build-push@v6
         with:
-          context: ./container
-          push: true
-          tags: generic/app:latest
+          image: generic/frontend
+          tags: v0, latest
+          registry: iad.ocir.io
+          dockerfile: ./container/Dockerfile
+          username: ${{ secrets.OCI_CR_PRINCIPAL }}
+          password: ${{ secrets.OCI_CR_CREDENTIAL }}
