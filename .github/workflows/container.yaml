@@ -40,6 +40,8 @@ jobs:
         #   context: ./container
         #   push: true
         #   tags: generic/app:latest
+      - run: pwd
+      - run: ls
       - 
         name: Build & push Docker image
         uses: mr-smithers-excellent/docker-build-push@v6
