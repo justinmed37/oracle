@@ -59,8 +59,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./container
-          registry: iad.ocir.io
-          push: true
+          push: false
           tags: generic/frontend:latest
 
       - name: Tag and push a container image
