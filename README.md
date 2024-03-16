@@ -28,6 +28,7 @@ OCI infrastructure
 
 ### Container Registry Notes
 
+1. Log in to docker ```docker login iad.ocir.io```
 When prompted, enter your username in the format <tenancy-namespace>/<username>. 
 
 ```<namespace>/<username-of-auth-token>```
