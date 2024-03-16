@@ -59,14 +59,14 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./container
-          push: false
+          push: true
           tags: generic/frontend:latest
 
-      - name: Tag and push a container image
-        id: tag-and-push-image
-        run: |
-          docker tag "generic/frontend:latest" "iad.ocir.io/idbjyurhyjpo/generic:0"
-          docker push "iad.ocir.io/idbjyurhyjpo/generic:0"
+      # - name: Tag and push a container image
+      #   id: tag-and-push-image
+      #   run: |
+      #     docker tag "generic/frontend:latest" "iad.ocir.io/idbjyurhyjpo/generic:0"
+      #     docker push "iad.ocir.io/idbjyurhyjpo/generic:0"
       # - run: pwd
       # - run: ls
       # - 
