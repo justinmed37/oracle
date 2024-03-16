@@ -42,9 +42,9 @@ jobs:
         run: terraform plan -no-color
         working-directory: ${{ env.BOOTSTRAP_DIR }}
 
-      - run: echo ${{ steps.tf_plan.outputs.stdout }}
-      - run: echo ${{ steps.tf_plan.outputs.stderr }}
-      - run: echo ${{ steps.tf_plan.outputs.exitcode }}
+      # - run: echo ${{ steps.tf_plan.outputs.stdout }}
+      # - run: echo ${{ steps.tf_plan.outputs.stderr }}
+      # - run: echo ${{ steps.tf_plan.outputs.exitcode }}
 
 
       # - name: 'Terraform Init'
