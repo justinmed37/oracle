@@ -50,7 +50,7 @@ jobs:
           query: "data[*]"
       - name: List Results
         run: |
-          echo ${{ steps.find-compartments.outputs }} | jq .
+          echo ${{ steps.find-compartments.outputs.output }} | jq .
 
 
   # my-instances:
