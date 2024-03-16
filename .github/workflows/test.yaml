@@ -47,7 +47,7 @@ jobs:
         id: find-compartments
         with:
           command: 'iam compartment list --compartment-id-in-subtree=true'
-          query: "data[].id"
+          query: "data[*]"
       - name: List Results
         run: |
           echo ${{ steps.find-compartments.outputs }} | jq .
