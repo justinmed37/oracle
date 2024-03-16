@@ -55,7 +55,7 @@ jobs:
         with:
           auth_token: ${{ secrets.OCI_CR_CREDENTIAL }}
 
-      -name: Build and push
+      - name: Build and push
         uses: docker/build-push-action@v5
         with:
           context: ./container
