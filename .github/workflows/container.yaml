@@ -33,7 +33,7 @@ jobs:
           registry: iad.ocir.io
           username: ${{ secrets.OCI_CR_PRINCIPAL }}
           password: ${{ secrets.OCI_CR_CREDENTIAL }}
-      -
+      # -
         # name: Build and push
         # uses: docker/build-push-action@v5
         # with:
