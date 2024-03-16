@@ -36,7 +36,9 @@ jobs:
 
       - id: tf_init
         working-directory: ${{ env.BOOTSTRAP_DIR }}
-        run: terraform init 
+        run: terraform init
+      - id: cleanup
+        run: rm -rf ~/.oci/sessions
       - id: tf_plan
         run: terraform plan -no-color
         working-directory: ${{ env.BOOTSTRAP_DIR }}
