@@ -12,7 +12,10 @@ jobs:
   docker:
     runs-on: ubuntu-latest
     env:
-      TERRAFORM_DIR: "./container"
+      working-directory: ./container
+    defaults:
+      run:
+        working-directory: ${{ env.working-directory }}
     steps:
       -
         name: Checkout
@@ -26,7 +29,6 @@ jobs:
       -
         name: Build and push
         uses: docker/build-push-action@v5
-        working-directory: ${{ env.TERRAFORM_DIR }}
         with:
           context: .
           push: false
