@@ -62,7 +62,7 @@ jobs:
 
       - name: Docker Push
         run: | 
-          docker build -t iad.ocir.io/idbjyurhyjpo/generic/frontend:0
+          docker build -t "iad.ocir.io/idbjyurhyjpo/generic/frontend:0" .
           docker push "iad.ocir.io/idbjyurhyjpo/generic/frontend:0"
         #  docker tag "generic/frontend:0" "iad.ocir.io/idbjyurhyjpo/generic:0"
 
