@@ -59,7 +59,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./container
-          push: true
+          push: false
           tags: frontend:0
 
       - name: Docker Push
