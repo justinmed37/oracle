@@ -62,6 +62,12 @@ jobs:
           push: true
           tags: frontend:0
 
+      - name: Docker Push
+        with:
+          auth_token: ${{ secrets.OCI_CR_CREDENTIAL }}
+        run: |
+          docker push "iad.ocir.io/idbjyurhyjpo/generic:0"
+
       # - name: Tag and push a container image
       #   id: tag-and-push-image
       #   run: |
