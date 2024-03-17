@@ -58,10 +58,12 @@ jobs:
         with:
           context: ./container
           push: false
-          tags: iad.ocir.io/idbjyurhyjpo/generic/frontend:0
+          tags: generic/frontend:0
 
       - name: Docker Push
-        run: docker push "iad.ocir.io/idbjyurhyjpo/generic/frontend:0"
+        run: | 
+          docker tag "generic/frontend:0" "iad.ocir.io/idbjyurhyjpo/generic:0"
+          docker push "iad.ocir.io/idbjyurhyjpo/generic/frontend:0"
 
       # - name: Tag and push a container image
       #   id: tag-and-push-image
