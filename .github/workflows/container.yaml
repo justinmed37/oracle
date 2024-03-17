@@ -44,7 +44,7 @@ jobs:
         uses: oracle-actions/get-ocir-repository@v1.2.1
         id: get-ocir-repository
         with:
-          name: generic
+          name: generic/frontend
           compartment: ${{ secrets.OCI_CR_COMPARTMENT_OCID }}
 
       - name: Log into OCIR
