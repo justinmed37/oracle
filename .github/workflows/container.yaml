@@ -17,7 +17,7 @@ jobs:
       OCI_CLI_FINGERPRINT: ${{ secrets.OCI_CLI_FINGERPRINT }}
       OCI_CLI_KEY_CONTENT: ${{ secrets.OCI_CLI_KEY_CONTENT }}
       OCI_CLI_REGION: ${{ secrets.OCI_CLI_REGION }}
-      working-directory: ./container
+      working-directory: ../../container
     defaults:
       run:
         working-directory: ${{ env.working-directory }}
@@ -56,7 +56,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          # context: ./container
+          context: ./container
           push: false
           tags: iad.ocir.io/idbjyurhyjpo/generic/frontend:0
 
