@@ -18,11 +18,11 @@ jobs:
       OCI_CLI_KEY_CONTENT: ${{ secrets.OCI_CLI_KEY_CONTENT }}
       OCI_CLI_REGION: ${{ secrets.OCI_CLI_REGION }}
 
-    # env:
-    #   working-directory: ./container
-    # defaults:
-    #   run:
-    #     working-directory: ${{ env.working-directory }}
+    env:
+      working-directory: ./container
+    defaults:
+      run:
+        working-directory: ${{ env.working-directory }}
     steps:
       -
         name: Checkout
@@ -58,7 +58,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: ./container
+          # context: ./container
           push: false
           tags: iad.ocir.io/idbjyurhyjpo/generic/frontend:0
 
