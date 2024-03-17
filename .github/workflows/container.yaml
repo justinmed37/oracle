@@ -46,13 +46,13 @@ jobs:
         uses: oracle-actions/get-ocir-repository@v1.2.1
         id: get-ocir-repository
         with:
+          name: generic
           compartment: ${{ secrets.OCI_CR_COMPARTMENT_OCID }}
 
       - name: Log into OCIR
         uses: oracle-actions/login-ocir@v1.2.1
         id: login-ocir
         with:
-          name: generic
           auth_token: ${{ secrets.OCI_CR_CREDENTIAL }}
 
       - name: Build and push
