@@ -53,17 +53,18 @@ jobs:
         with:
           auth_token: ${{ secrets.OCI_CR_CREDENTIAL }}
 
-      - name: Build and push
-        uses: docker/build-push-action@v5
-        with:
-          context: ./container
-          push: false
-          tags: generic/frontend:0
+      # - name: Build and push
+      #   uses: docker/build-push-action@v5
+      #   with:
+      #     context: ./container
+      #     push: false
+      #     tags: generic/frontend:0
 
       - name: Docker Push
         run: | 
-          docker tag "generic/frontend:0" "iad.ocir.io/idbjyurhyjpo/generic:0"
+          docker build -t iad.ocir.io/idbjyurhyjpo/generic/frontend:0
           docker push "iad.ocir.io/idbjyurhyjpo/generic/frontend:0"
+        #  docker tag "generic/frontend:0" "iad.ocir.io/idbjyurhyjpo/generic:0"
 
       # - name: Tag and push a container image
       #   id: tag-and-push-image
