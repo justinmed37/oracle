@@ -24,3 +24,13 @@ OCI infrastructure
 1. Paste in config file from oracle console to the config file
 1. Set the private key location to /home/$USER/.ssh/oci.pem
 1. ```export TF_VAR_config_file_profile="/home/$USER/.oci/config"```
+
+
+### Container Registry Notes
+
+1. Log in to docker ```docker login iad.ocir.io```
+When prompted, enter your username in the format <tenancy-namespace>/<username>. 
+
+```<namespace>/<username-of-auth-token>```
+
+If your tenancy is federated with Oracle Identity Cloud Service, use the format <tenancy-namespace>/oracleidentitycloudservice/<username>.
