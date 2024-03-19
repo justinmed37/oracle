@@ -112,6 +112,7 @@ jobs:
         with:
           github-token: ${{ github.token }}
           script: |
+            ${{ matrix.terraform_dir }}
             if (!context || !context.issue || !context.issue.number) {
               return;
             }
