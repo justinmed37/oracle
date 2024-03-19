@@ -1,0 +1,218 @@
+name: Terraform Change Detection
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '**.tf'
+      - '.github/workflows/tf_changes.yml'
+
+jobs:
+  tf_changes:
+    name: 'Check file changes'
+    runs-on: ubuntu-latest
+    outputs:
+      terraform_dirs: ${{ steps.changed-files.outputs.all_changed_files }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v43
+        with:
+          matrix: true
+          dir_names: true
+          dir_names_exclude_current_dir: true
+          files: |
+            **.tf
+          files_ignore: |
+            infrastructure/shared_modules/**
+
+      - name: List all changed files
+        env:
+          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+        run: |
+          echo "$ALL_CHANGED_FILES"
+
+  tf_matrix:
+    runs-on: ubuntu-latest
+    needs: tf_changes
+    strategy:
+      matrix:
+        terraform_dir: ${{ fromJSON(needs.tf_changes.outputs.terraform_dirs) }}
+    env:
+      OCI_CLI_USER: ${{ secrets.OCI_CLI_USER }}
+      OCI_CLI_TENANCY: ${{ secrets.OCI_CLI_TENANCY }}
+      OCI_CLI_FINGERPRINT: ${{ secrets.OCI_CLI_FINGERPRINT }}
+      OCI_CLI_KEY_CONTENT: ${{ secrets.OCI_CLI_KEY_CONTENT }}
+      OCI_CLI_REGION: ${{ secrets.OCI_CLI_REGION }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      BOOTSTRAP_DIR: "./infrastructure/bootstrap"
+      TF_VAR_user_ocid: ${{ secrets.OCI_CLI_USER }}
+      TF_VAR_tenancy_ocid: ${{ secrets.OCI_CLI_TENANCY }}
+      TF_VAR_fingerprint: ${{ secrets.OCI_CLI_FINGERPRINT }}
+      TF_VAR_private_key: ${{ secrets.OCI_CLI_KEY_CONTENT }}
+      TF_VAR_region: ${{ secrets.OCI_CLI_REGION }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Terraform Setup
+        uses: hashicorp/setup-terraform@v3.0.0
+        with:
+          terraform_version: 1.7.4
+
+      - name: Terraform Format
+        id: tf_fmt
+        shell: bash
+        run: |
+          cd ${{ matrix.terraform_dir }}
+          if terraform fmt -recursive -check; then
+            echo "fmt-outcome=success" >> $GITHUB_OUTPUT
+          else
+            echo "fmt-outcome=failure" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Terraform Init
+        id: tf_init
+        working-directory: ${{ matrix.terraform_dir }}
+        run: terraform init
+
+      - name: Terraform Validate
+        id: tf_validate
+        working-directory: ${{ matrix.terraform_dir }}
+        run: |
+          if terraform validate -no-color; then
+            echo "validate-outcome=success" >> $GITHUB_OUTPUT
+          else
+            echo "validate-outcome=failure" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Terraform Plan
+        id: tf_plan
+        working-directory: ${{ matrix.terraform_dir }}
+        run: |
+          if terraform plan -var-file=terraform.tfvars -no-color -lock-timeout=60s > plan.out 2>&1; then
+            echo "plan-outcome=success" >> $GITHUB_OUTPUT
+            cat plan.out
+          else
+            echo "plan-outcome=failure" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create/Update Comment
+        uses: actions/github-script@v7
+        env:
+          TF_WORKSPACE: "${{ matrix.terraform_dir }}"
+          CUSTOM_TITLE: "Terraform Plan Results"
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            if (!context || !context.issue || !context.issue.number) {
+              return;
+            }
+
+            const tag = [
+              process.env.CUSTOM_TITLE,
+              process.env.TF_WORKSPACE,
+            ]
+              .filter(s => !!s)
+              .join(" ");
+
+            const run_url = process.env.GITHUB_SERVER_URL + '/' + process.env.GITHUB_REPOSITORY + '/actions/runs/' + process.env.GITHUB_RUN_ID
+            const file_path = process.env.TF_WORKSPACE + '/plan.out'
+            const run_link = '<a href="' + run_url + '">Actions</a>.'
+            const fs = require('fs')
+            const raw_plan = fs.readFileSync(file_path, 'utf8')
+            const plan = raw_plan.length > 65000 ? " ..." + raw_plan.toString().substring(raw_plan.length - 65000, raw_plan.length) : raw_plan
+            const truncated_message = raw_plan.length > 65000 ? "Output is too long and was truncated. You can read full Plan in " + run_link + "<br /><br />" : ""
+
+            const commentTitle = `### Terraform Status ${tag}`;
+            const commentContent = `
+            ${commentTitle}
+            #### Terraform Format and Style 🖌 \`${{ steps.tf_fmt.outputs.fmt-outcome }}\`
+            #### Terraform Validate 📖 \`${{ steps.tf_validate.outputs.validate-outcome }}\`
+            #### Terraform Plan 📖 \`${{ steps.tf_plan.outputs.plan-outcome }}\`
+            <details>
+            <summary>Show Plan</summary>
+
+            \`\`\`
+            ${plan}
+            \`\`\`
+
+            </details>
+            ${truncated_message}
+
+            Pusher: @${{ github.actor }}
+            Action: \`${{ github.event_name }}\`
+            `;
+
+            const comments = await github.rest.issues.listComments({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+            const githubActionsBotComment = comments.data.find(comment =>
+              comment.user.login === 'github-actions[bot]' &&
+              comment.body.includes(commentTitle)
+            );
+
+            if (githubActionsBotComment) {
+              await github.rest.issues.updateComment({
+                comment_id: githubActionsBotComment.id,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: commentContent,
+              })
+            } else {
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: commentContent,
+              })
+            }
+
+      - name: Terraform Validate Status
+        shell: bash
+        run: |
+          if [[ '${{ steps.tf_validate.outputs.validate-outcome }}' == 'failure' ]]; then
+            cat <<"EOFFFF"
+            ${{ steps.validate.outputs.stdout }}
+            ${{ steps.validate.outputs.stderr }}
+          EOFFFF
+            exit 1
+          fi
+
+      - name: Terraform Plan Status
+        shell: bash
+        run: |
+          if [[ '${{ steps.tf_plan.outputs.plan-outcome }}' == 'failure' ]]; then
+            cat <<"EOFFFF"
+            ${{ steps.plan.outputs.stdout }}
+            ${{ steps.plan.outputs.stderr }}
+          EOFFFF
+            exit 1
+          fi
+
+      - name: Terraform Format Status
+        shell: bash
+        run: |
+          if [[ '${{ steps.fmt.outputs.fmt-outcome }}' == 'failure' ]]; then
+            cat <<"EOFFFF"
+            ${{ steps.fmt.outputs.stdout }}
+            ${{ steps.fmt.outputs.stderr }}
+          EOFFFF
+            exit 1
+          fi
+
+      # - name: Retrieve the OCID of a named compartment in tenancy
+      #   uses: oracle-actions/run-oci-cli-command@v1.1.1
+      #   id: find-compartments
+      #   with:
+      #     command: 'iam compartment list --compartment-id-in-subtree=true'
+      #     query: "data[*]"
+      # - name: List Results
+      #   run: |
+      #     echo ${{ steps.find-compartments.outputs.output }} | jq .
