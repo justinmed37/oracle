@@ -26,7 +26,7 @@ jobs:
           files: |
             **.tf
           files_ignore: |
-            shared_modules/**
+            infrastructure/shared_modules/**
           # dir_names_include_files: |
           #   infrastructure/network
           #   infrastructure/bootstrap
