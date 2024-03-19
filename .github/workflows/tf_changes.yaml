@@ -85,26 +85,26 @@ jobs:
         name: Comment Terraform Output
         env: 
           PLAN: ${{ steps.show.outputs.stdout }}
-  with:
-    script: |
-      const output = `#### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
-        
-      <details><summary>Show Plan</summary>
+        with:
+          script: |
+            const output = `#### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+              
+            <details><summary>Show Plan</summary>
 
-      \`\`\`\n
-      ${process.env.PLAN}
-      \`\`\`
+            \`\`\`\n
+            ${process.env.PLAN}
+            \`\`\`
 
-      </details>
+            </details>
 
-      *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+            *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
 
-      github.rest.issues.createComment({
-        issue_number: context.issue.number,
-        owner: context.repo.owner,
-        repo: context.repo.repo,
-        body: output
-      })`
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })`
 
       # - name: Retrieve the OCID of a named compartment in tenancy
       #   uses: oracle-actions/run-oci-cli-command@v1.1.1
