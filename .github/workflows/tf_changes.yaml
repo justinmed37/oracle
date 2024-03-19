@@ -37,10 +37,10 @@ jobs:
           # since_last_remote_commit: true 
           dir_names: true
           dir_names_include_files: |
-            infrastructure/network
-            infrastructure/bootstrap
-          files: |
-            **.tf
+            infrastructure/network/*.tf
+            infrastructure/bootstrap/*.tf
+          # files: |
+          #   **.tf
 
       - name: List all changed files
         env:
