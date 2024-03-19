@@ -99,10 +99,10 @@ jobs:
           fi
 
       
-      - name: Terraform Show
-        id: tf_show
-        working-directory: ${{ matrix.terraform_dir }}
-        run: terraform show -no-color tfplan
+      # - name: Terraform Show
+      #   id: tf_show
+      #   working-directory: ${{ matrix.terraform_dir }}
+      #   run: terraform show -no-color tfplan
 
       - name: Create/Update Comment
         uses: actions/github-script@v7
