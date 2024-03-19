@@ -84,7 +84,7 @@ jobs:
       - uses: actions/github-script@v6
         name: Comment Terraform Output
         env: 
-          PLAN: ${{ steps.show.outputs.stdout }}
+          PLAN: ${{ steps.tf_show.outputs.stdout }}
         with:
           script: |
             const output = `#### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
