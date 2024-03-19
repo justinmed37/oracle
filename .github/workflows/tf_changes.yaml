@@ -27,6 +27,7 @@ jobs:
             **.tf
           files_ignore: |
             infrastructure/shared_modules/**
+            infrastructure/template/**
 
       - name: List all changed files
         env:
