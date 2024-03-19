@@ -34,9 +34,9 @@ data "oci_identity_availability_domains" "local_ads" {
 resource "oci_container_instances_container_instance" "frontend" {
   #Required
   display_name        = "${var.prefix}-container-instance-frontend"
-  availability_domain      = data.oci_identity_availability_domains.local_ads.availability_domains.0.name
+  availability_domain = data.oci_identity_availability_domains.local_ads.availability_domains.0.name
   compartment_id      = var.compartment_id
-  shape = "CI.Standard.E4.Flex"
+  shape               = "CI.Standard.E4.Flex"
   shape_config {
     ocpus         = 1
     memory_in_gbs = 4
@@ -52,8 +52,8 @@ resource "oci_container_instances_container_instance" "frontend" {
     image_url                      = "iad.ocir.io/idbjyurhyjpo/generic-bu/frontend:0-6-dev"
     is_resource_principal_disabled = false
     working_directory              = "/app/frontend"
-    command = [ "python3" ]
-    arguments = [ "main.py" ]
+    command                        = ["python3"]
+    arguments                      = ["main.py"]
     resource_config {
       memory_limit_in_gbs = 4
       vcpus_limit         = 1
