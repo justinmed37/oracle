@@ -86,6 +86,7 @@ jobs:
         env: 
           PLAN: ${{ steps.tf_show.outputs.stdout }}
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const output = `#### Terraform Plan 📖\`${{ steps.tf_plan.outcome }}\`
               
