@@ -2,32 +2,18 @@ variable "compartment_id" {}
 variable "vcn_id" {}
 variable "prefix" {}
 variable "cidr_block" {}
+variable "dhcp_options_id" {}
 
 resource "oci_core_subnet" "public" {
   display_name    = "${var.prefix}-subnet-public"
   cidr_block      = var.cidr_block
   compartment_id  = var.compartment_id
   vcn_id          = var.vcn_id
-  dhcp_options_id = oci_core_dhcp_options.dhcp_options_public.id
+  dhcp_options_id = var.dhcp_options_id
 
   prohibit_internet_ingress = false
   route_table_id            = oci_core_route_table.route_table_public.id
   security_list_ids         = [oci_core_security_list.security_list_public.id]
-}
-
-resource "oci_core_dhcp_options" "dhcp_options_public" {
-  display_name   = "${var.prefix}-dhcp-options-public"
-  compartment_id = var.compartment_id
-  vcn_id         = var.vcn_id
-  options {
-    type        = "DomainNameServer"
-    server_type = "VcnLocalPlusInternet"
-  }
-
-  options {
-    type                = "SearchDomain"
-    search_domain_names = ["genericbunetwork.oraclevcn.com"]
-  }
 }
 
 resource "oci_core_route_table" "route_table_public" {
@@ -61,15 +47,15 @@ resource "oci_core_security_list" "security_list_public" {
 
 
   egress_security_rules {
-    protocol         = "TCP"
+    protocol         = "6"
     destination      = "0.0.0.0/0"
-    destination_type = "CIDR"
+    destination_type = "CIDR_BLOCK"
     description      = "Enable all egress traffic from subnet"
   }
 
   ingress_security_rules {
-    protocol    = "TCP"
-    source_type = "CIDR"
+    protocol    = "6"
+    source_type = "CIDR_BLOCK"
     source      = "0.0.0.0/0"
     description = "Enable SSH traffic to public subnet"
     tcp_options {
@@ -79,8 +65,8 @@ resource "oci_core_security_list" "security_list_public" {
   }
 
   ingress_security_rules {
-    protocol    = "TCP"
-    source_type = "CIDR"
+    protocol    = "6"
+    source_type = "CIDR_BLOCK"
     source      = "0.0.0.0/0"
     description = "Enable SSH traffic to public subnet"
     tcp_options {
@@ -90,8 +76,8 @@ resource "oci_core_security_list" "security_list_public" {
   }
 
   ingress_security_rules {
-    protocol    = "TCP"
-    source_type = "CIDR"
+    protocol    = "6"
+    source_type = "CIDR_BLOCK"
     source      = "0.0.0.0/0"
     description = "Enable SSH traffic to public subnet"
     tcp_options {
@@ -101,13 +87,23 @@ resource "oci_core_security_list" "security_list_public" {
   }
 
   ingress_security_rules {
-    protocol    = "ICMP"
-    source_type = "CIDR"
+    protocol    = "1"
+    source_type = "CIDR_BLOCK"
     source      = "0.0.0.0/0"
     description = "ICMP"
     icmp_options {
       code = 3
       type = 4
+    }
+  }
+
+  ingress_security_rules {
+    protocol    = "1"
+    source_type = "CIDR_BLOCK"
+    source      = "0.0.0.0/0"
+    description = "ICMP"
+    icmp_options {
+      type = 3
     }
   }
 }
