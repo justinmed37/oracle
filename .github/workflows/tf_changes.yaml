@@ -91,8 +91,9 @@ jobs:
         id: tf_plan
         working-directory: ${{ matrix.terraform_dir }}
         run: |
-          if terraform plan -lock-timeout=60s tfplan 2>&1; then
+          if terraform plan -no-color -lock-timeout=60s  > plan.out 2>&1; then
             echo "plan-outcome=success" >> $GITHUB_OUTPUT
+            cat plan.out
           else
             echo "plan-outcome=failure" >> $GITHUB_OUTPUT
           fi
@@ -103,88 +104,87 @@ jobs:
         working-directory: ${{ matrix.terraform_dir }}
         run: terraform show -no-color tfplan
 
+      # - name: Create/Update Comment
+      #   uses: actions/github-script@v7
+      #   env:
+      #     TF_WORKSPACE: "${{ matrix.terraform_dir }}"
+      #     CUSTOM_TITLE: "Terraform Plan Results"
+      #   with:
+      #     github-token: ${{ github.token }}
+      #     script: |
+      #       if (!context || !context.issue || !context.issue.number) {
+      #         return;
+      #       }
 
-      - name: Create/Update Comment
-        uses: actions/github-script@v7
-        env:
-          TF_WORKSPACE: "${{ matrix.terraform_dir }}"
-          CUSTOM_TITLE: "Terraform Plan Results"
-        with:
-          github-token: ${{ github.token }}
-          script: |
-            if (!context || !context.issue || !context.issue.number) {
-              return;
-            }
+      #       const tag = [
+      #         process.env.CUSTOM_TITLE,
+      #         process.env.TF_WORKSPACE,
+      #       ]
+      #         .filter(s => !!s)
+      #         .join(" ");
 
-            const tag = [
-              process.env.CUSTOM_TITLE,
-              process.env.TF_WORKSPACE,
-            ]
-              .filter(s => !!s)
-              .join(" ");
+      #       const run_url = process.env.GITHUB_SERVER_URL + '/' + process.env.GITHUB_REPOSITORY + '/actions/runs/' + process.env.GITHUB_RUN_ID
+      #       const run_link = '<a href="' + run_url + '">Actions</a>.'
+      #       const fs = require('fs')
+      #       const raw_plan = fs.readFileSync('plan.out', 'utf8')
+      #       const plan = raw_plan.length > 65000 ? " ..." + raw_plan.toString().substring(raw_plan.length - 65000, raw_plan.length) : raw_plan
+      #       const truncated_message = raw_plan.length > 65000 ? "Output is too long and was truncated. You can read full Plan in " + run_link + "<br /><br />" : ""
 
-            const run_url = process.env.GITHUB_SERVER_URL + '/' + process.env.GITHUB_REPOSITORY + '/actions/runs/' + process.env.GITHUB_RUN_ID
-            const run_link = '<a href="' + run_url + '">Actions</a>.'
-            const fs = require('fs')
-            const raw_plan = fs.readFileSync('plan.out', 'utf8')
-            const plan = raw_plan.length > 65000 ? " ..." + raw_plan.toString().substring(raw_plan.length - 65000, raw_plan.length) : raw_plan
-            const truncated_message = raw_plan.length > 65000 ? "Output is too long and was truncated. You can read full Plan in " + run_link + "<br /><br />" : ""
+      #       const commentTitle = `### Terraform Status ${tag}`;
+      #       const commentContent = `
+      #       ${commentTitle}
+      #       #### Terraform Format and Style 🖌 \`${{ steps.tf_fmt.outputs.fmt-outcome }}\`
+      #       #### Terraform Validate 📖 \`${{ steps.tf_validate.outputs.validate-outcome }}\`
+      #       #### Terraform Plan 📖 \`${{ steps.tf_plan.outputs.plan-outcome }}\`
+      #       <details>
+      #       <summary>Show Plan</summary>
 
-            const commentTitle = `### Terraform Status ${tag}`;
-            const commentContent = `
-            ${commentTitle}
-            #### Terraform Format and Style 🖌 \`${{ steps.tf_fmt.outputs.fmt-outcome }}\`
-            #### Terraform Validate 📖 \`${{ steps.tf_validate.outputs.validate-outcome }}\`
-            #### Terraform Plan 📖 \`${{ steps.tf_plan.outputs.plan-outcome }}\`
-            <details>
-            <summary>Show Plan</summary>
+      #       \`\`\`
+      #       ${plan}
+      #       \`\`\`
 
-            \`\`\`
-            ${plan}
-            \`\`\`
+      #       </details>
+      #       ${truncated_message}
 
-            </details>
-            ${truncated_message}
+      #       Pusher: @${{ github.actor }}
+      #       Action: \`${{ github.event_name }}\`
+      #       `;
 
-            Pusher: @${{ github.actor }}
-            Action: \`${{ github.event_name }}\`
-            `;
+      #       const comments = await github.rest.issues.listComments({
+      #         issue_number: context.issue.number,
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #       });
+      #       const githubActionsBotComment = comments.data.find(comment =>
+      #         comment.user.login === 'github-actions[bot]' &&
+      #         comment.body.includes(commentTitle)
+      #       );
 
-            const comments = await github.rest.issues.listComments({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-            });
-            const githubActionsBotComment = comments.data.find(comment =>
-              comment.user.login === 'github-actions[bot]' &&
-              comment.body.includes(commentTitle)
-            );
-
-            if (raw_plan.includes("No changes.")) {
-              if (githubActionsBotComment) {
-                await github.rest.issues.deleteComment({
-                  comment_id: githubActionsBotComment.id,
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                })
-              }
-            } else {
-              if (githubActionsBotComment) {
-                await github.rest.issues.updateComment({
-                  comment_id: githubActionsBotComment.id,
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  body: commentContent,
-                })
-              } else {
-                await github.rest.issues.createComment({
-                  issue_number: context.issue.number,
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  body: commentContent,
-                })
-              }
-            }
+      #       if (raw_plan.includes("No changes.")) {
+      #         if (githubActionsBotComment) {
+      #           await github.rest.issues.deleteComment({
+      #             comment_id: githubActionsBotComment.id,
+      #             owner: context.repo.owner,
+      #             repo: context.repo.repo,
+      #           })
+      #         }
+      #       } else {
+      #         if (githubActionsBotComment) {
+      #           await github.rest.issues.updateComment({
+      #             comment_id: githubActionsBotComment.id,
+      #             owner: context.repo.owner,
+      #             repo: context.repo.repo,
+      #             body: commentContent,
+      #           })
+      #         } else {
+      #           await github.rest.issues.createComment({
+      #             issue_number: context.issue.number,
+      #             owner: context.repo.owner,
+      #             repo: context.repo.repo,
+      #             body: commentContent,
+      #           })
+      #         }
+      #       }
 
       # - uses: actions/github-script@v6
       #   name: Comment Terraform Output
