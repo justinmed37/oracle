@@ -1,9 +1,6 @@
 name: containerize
 
 on:
-  push:
-    branches:
-      - 'main'
   pull_request:
     branches:
       - main
@@ -62,8 +59,8 @@ jobs:
 
       - name: Docker Push
         run: | 
-          docker build -t "iad.ocir.io/idbjyurhyjpo/generic-bu/frontend:1" .
-          docker push "iad.ocir.io/idbjyurhyjpo/generic-bu/frontend:1"
+          docker build -t "iad.ocir.io/idbjyurhyjpo/generic-bu/frontend:0-${{ github.event.number}}-dev" .
+          docker push "iad.ocir.io/idbjyurhyjpo/generic-bu/frontend:0-${{ github.event.number}}-dev"
         #  docker tag "generic/frontend:0" "iad.ocir.io/idbjyurhyjpo/generic:0"
 
       # - name: Tag and push a container image
