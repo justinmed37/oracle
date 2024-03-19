@@ -81,7 +81,7 @@ jobs:
         working-directory: ${{ matrix.terraform_dir }}
         run: terraform show -no-color tfplan
       
-      - uses: actions/git5hub-script@v6
+      - uses: actions/github-script@v6
         name: Comment Terraform Output
         env: 
           PLAN: ${{ steps.show.outputs.stdout }}
