@@ -87,7 +87,7 @@ jobs:
           PLAN: ${{ steps.tf_show.outputs.stdout }}
         with:
           script: |
-            const output = `#### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+            const output = `#### Terraform Plan 📖\`${{ steps.tf_plan.outcome }}\`
               
             <details><summary>Show Plan</summary>
 
