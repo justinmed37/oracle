@@ -189,38 +189,38 @@ jobs:
               }
             }
 
-    - name: Terraform Validate Status
-      shell: bash
-      run: |
-        if [[ '${{ steps.tf_validate.outputs.validate-outcome }}' == 'failure' ]]; then
-          cat <<"EOFFFF"
-          ${{ steps.validate.outputs.stdout }}
-          ${{ steps.validate.outputs.stderr }}
-        EOFFFF
-          exit 1
-        fi
+      - name: Terraform Validate Status
+        shell: bash
+        run: |
+          if [[ '${{ steps.tf_validate.outputs.validate-outcome }}' == 'failure' ]]; then
+            cat <<"EOFFFF"
+            ${{ steps.validate.outputs.stdout }}
+            ${{ steps.validate.outputs.stderr }}
+          EOFFFF
+            exit 1
+          fi
 
-    - name: Terraform Plan Status
-      shell: bash
-      run: |
-        if [[ '${{ steps.tf_plan.outputs.plan-outcome }}' == 'failure' ]]; then
-          cat <<"EOFFFF"
-          ${{ steps.plan.outputs.stdout }}
-          ${{ steps.plan.outputs.stderr }}
-        EOFFFF
-          exit 1
-        fi
+      - name: Terraform Plan Status
+        shell: bash
+        run: |
+          if [[ '${{ steps.tf_plan.outputs.plan-outcome }}' == 'failure' ]]; then
+            cat <<"EOFFFF"
+            ${{ steps.plan.outputs.stdout }}
+            ${{ steps.plan.outputs.stderr }}
+          EOFFFF
+            exit 1
+          fi
 
-    - name: Terraform Format Status
-      shell: bash
-      run: |
-        if [[ '${{ steps.fmt.outputs.fmt-outcome }}' == 'failure' ]]; then
-          cat <<"EOFFFF"
-          ${{ steps.fmt.outputs.stdout }}
-          ${{ steps.fmt.outputs.stderr }}
-        EOFFFF
-          exit 1
-        fi
+      - name: Terraform Format Status
+        shell: bash
+        run: |
+          if [[ '${{ steps.fmt.outputs.fmt-outcome }}' == 'failure' ]]; then
+            cat <<"EOFFFF"
+            ${{ steps.fmt.outputs.stdout }}
+            ${{ steps.fmt.outputs.stderr }}
+          EOFFFF
+            exit 1
+          fi
 
       # - name: Retrieve the OCID of a named compartment in tenancy
       #   uses: oracle-actions/run-oci-cli-command@v1.1.1
