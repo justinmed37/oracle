@@ -64,11 +64,6 @@ jobs:
         with:
           terraform_version: 1.7.4
 
-      # - uses: tchupp/actions-terraform-pr@v1
-      #   with:
-      #     path: ${{ matrix.terraform_dir }}
-        #   apply-branch: "main"
-
       - name: Terraform Format
         id: tf_fmt
         shell: bash

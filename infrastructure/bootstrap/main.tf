@@ -7,16 +7,6 @@ resource "oci_identity_compartment" "projectX" {
   name           = "projectX"
 }
 
-# resource "oci_objectstorage_bucket" "tfstate" {
-#   # Required
-#   compartment_id = resource.oci_identity_compartment.projectX.id
-#   name           = "tfstate"
-#   namespace      = "idbjyurhyjpo"
-
-#   # Optional
-#   versioning = "Enabled"
-# }
-
 resource "oci_objectstorage_bucket" "bootstrap_tfstate" {
   # Required
   compartment_id = var.tenancy_ocid

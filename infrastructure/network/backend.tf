@@ -4,7 +4,6 @@ terraform {
     key       = "tf.tfstate"
     region    = "us-ashburn-1"
     endpoints = { s3 = "https://idbjyurhyjpo.compat.objectstorage.us-ashburn-1.oraclecloud.com" }
-    # shared_credentials_files     = ["$HOME/.aws/credentials"]
     skip_region_validation      = true
     skip_credentials_validation = true
     skip_requesting_account_id  = true
