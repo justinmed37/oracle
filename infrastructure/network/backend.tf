@@ -1,9 +1,9 @@
 terraform {
   backend "s3" {
-    bucket    = "generic_bu_tfstate"
-    key       = "tf.tfstate"
-    region    = "us-ashburn-1"
-    endpoints = { s3 = "https://idbjyurhyjpo.compat.objectstorage.us-ashburn-1.oraclecloud.com" }
+    bucket                      = "generic_bu_tfstate"
+    key                         = "tf.tfstate"
+    region                      = "us-ashburn-1"
+    endpoints                   = { s3 = "https://idbjyurhyjpo.compat.objectstorage.us-ashburn-1.oraclecloud.com" }
     skip_region_validation      = true
     skip_credentials_validation = true
     skip_requesting_account_id  = true
