@@ -70,3 +70,48 @@ jobs:
         id: tf_validate
         working-directory: ${{ matrix.terraform_dir }}
         run: terraform validate
+
+      - name: Terraform Plan
+        id: tf_plan
+        working-directory: ${{ matrix.terraform_dir }}
+        run: terraform plan -out tfplan
+      
+      - name: Terraform Show
+        id: tf_show
+        working-directory: ${{ matrix.terraform_dir }}
+        run: terraform show -no-color tfplan
+      
+      - uses: actions/git5hub-script@v6
+        name: Comment Terraform Output
+        env: 
+          PLAN: ${{ steps.show.outputs.stdout }}
+  with:
+    script: |
+      const output = `#### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+        
+      <details><summary>Show Plan</summary>
+
+      \`\`\`\n
+      ${process.env.PLAN}
+      \`\`\`
+
+      </details>
+
+      *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+
+      github.rest.issues.createComment({
+        issue_number: context.issue.number,
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        body: output
+      })`
+
+      # - name: Retrieve the OCID of a named compartment in tenancy
+      #   uses: oracle-actions/run-oci-cli-command@v1.1.1
+      #   id: find-compartments
+      #   with:
+      #     command: 'iam compartment list --compartment-id-in-subtree=true'
+      #     query: "data[*]"
+      # - name: List Results
+      #   run: |
+      #     echo ${{ steps.find-compartments.outputs.output }} | jq .
