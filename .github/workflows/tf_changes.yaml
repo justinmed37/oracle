@@ -125,9 +125,10 @@ jobs:
               .join(" ");
 
             const run_url = process.env.GITHUB_SERVER_URL + '/' + process.env.GITHUB_REPOSITORY + '/actions/runs/' + process.env.GITHUB_RUN_ID
+            const file_path = process.env.TF_WORKSPACE + '/plan.out'
             const run_link = '<a href="' + run_url + '">Actions</a>.'
             const fs = require('fs')
-            const raw_plan = fs.readFileSync('plan.out', 'utf8')
+            const raw_plan = fs.readFileSync(file_path, 'utf8')
             const plan = raw_plan.length > 65000 ? " ..." + raw_plan.toString().substring(raw_plan.length - 65000, raw_plan.length) : raw_plan
             const truncated_message = raw_plan.length > 65000 ? "Output is too long and was truncated. You can read full Plan in " + run_link + "<br /><br />" : ""
 
