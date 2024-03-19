@@ -36,9 +36,14 @@ jobs:
         with:
           # since_last_remote_commit: true 
           dir_names: true
-          dir_names_include_files: |
-            infrastructure/network
-            infrastructure/bootstrap
+          dir_names_exclude_current_dir: true
+          files: |
+            **.tf
+          files_ignore: |
+            shared_modules
+          # dir_names_include_files: |
+          #   infrastructure/network
+          #   infrastructure/bootstrap
           # files: |
           #   **.tf
 
