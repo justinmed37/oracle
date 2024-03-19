@@ -14,11 +14,11 @@ resource "oci_core_vcn" "generic_bu_vcn" {
 
 # Create the public subnet
 module "public_subnet" {
-  source         = "../shared_modules/public_subnet"
-  compartment_id = var.compartment_id
-  vcn_id         = oci_core_vcn.generic_bu_vcn.id
-  prefix         = var.vcn_prefix
-  cidr_block     = var.public_cidr_block
+  source          = "../shared_modules/public_subnet"
+  compartment_id  = var.compartment_id
+  vcn_id          = oci_core_vcn.generic_bu_vcn.id
+  prefix          = var.vcn_prefix
+  cidr_block      = var.public_cidr_block
   dhcp_options_id = oci_core_dhcp_options.dhcp_options.id
 }
 
@@ -30,7 +30,7 @@ module "private" {
   prefix             = var.vcn_prefix
   cidr_block         = var.private_cidr_block
   ingress_cidr_block = var.cidr_block
-  dhcp_options_id = oci_core_dhcp_options.dhcp_options.id
+  dhcp_options_id    = oci_core_dhcp_options.dhcp_options.id
 }
 
 resource "oci_core_dhcp_options" "dhcp_options" {
