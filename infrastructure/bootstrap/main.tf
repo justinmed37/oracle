@@ -1,6 +1,4 @@
-variable "tenancy_ocid" {
-  default = "ocid1.tenancy.oc1..aaaaaaaaiutrjzaumegnunzwoqhngqcwnewh2ptjd4jqhqk6ovs47uqlso3a"
-}
+variable "tenancy_ocid" {}
 
 resource "oci_identity_compartment" "projectX" {
   # Required
