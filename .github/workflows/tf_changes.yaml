@@ -36,7 +36,7 @@ jobs:
     needs: tf_changes
     strategy:
       matrix:
-        terraform_dir: ${{ tf_changes.outputs.terraform_dirs }}
+        terraform_dir: [ ${{ tf_changes.outputs.terraform_dirs }} ]
     env:
       OCI_CLI_USER: ${{ secrets.OCI_CLI_USER }}
       OCI_CLI_TENANCY: ${{ secrets.OCI_CLI_TENANCY }}
