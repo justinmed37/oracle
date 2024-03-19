@@ -1,0 +1,6 @@
+tenancy_id         = "ocid1.tenancy.oc1..aaaaaaaaiutrjzaumegnunzwoqhngqcwnewh2ptjd4jqhqk6ovs47uqlso3a"
+compartment_id     = "ocid1.compartment.oc1..aaaaaaaalcz3pypy5oljdszlk4f6gvddty54uztch5hjzcon5h5kkwazwvaq"
+vcn_prefix         = "generic-bu"
+cidr_block         = "10.0.0.0/16"
+public_cidr_block  = "10.0.1.0/24"
+private_cidr_block = "10.0.2.0/24"
