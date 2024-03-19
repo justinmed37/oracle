@@ -34,7 +34,8 @@ jobs:
         uses: tj-actions/changed-files@v43
         # To compare changes between the current commit and the last pushed remote commit set `since_last_remote_commit: true`. e.g
         with:
-          since_last_remote_commit: true 
+          # since_last_remote_commit: true 
+          dir_names: true
           files: |
             **.tf
 
