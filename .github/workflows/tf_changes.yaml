@@ -99,7 +99,7 @@ jobs:
         id: tf_plan
         working-directory: ${{ matrix.terraform_dir }}
         run: |
-          if terraform plan -no-color -lock-timeout=60s  > plan.out 2>&1; then
+          if terraform plan -vars=terraform.tfvars -no-color -lock-timeout=60s > plan.out 2>&1; then
             echo "plan-outcome=success" >> $GITHUB_OUTPUT
             cat plan.out
           else
