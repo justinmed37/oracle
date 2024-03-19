@@ -106,7 +106,6 @@ jobs:
 
       - name: Create/Update Comment
         uses: actions/github-script@v7
-        working-directory: ${{ matrix.terraform_dir }}
         env:
           TF_WORKSPACE: "${{ matrix.terraform_dir }}"
           CUSTOM_TITLE: "Terraform Plan Results"
