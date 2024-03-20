@@ -55,6 +55,7 @@ jobs:
       TF_VAR_fingerprint: ${{ secrets.OCI_CLI_FINGERPRINT }}
       TF_VAR_private_key: ${{ secrets.OCI_CLI_KEY_CONTENT }}
       TF_VAR_region: ${{ secrets.OCI_CLI_REGION }}
+      TF_VAR_admin_password: ${{ secrets.OCI_DB_ADMIN_PASS }}
 
     steps:
       - name: Checkout
