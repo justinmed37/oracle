@@ -8,12 +8,12 @@ resource "oci_database_autonomous_database" "oci_database_autonomous_database" {
   admin_password                       = var.admin_password
   autonomous_maintenance_schedule_type = "REGULAR"
   compartment_id                       = var.compartment_id
-  compute_count                        = "2"
+  compute_count                        = "1"
   compute_model                        = "ECPU"
   customer_contacts {
     email = "justinmed37@gmail.com"
   }
-  data_storage_size_in_gb                        = "128"
+  data_storage_size_in_gb                        = "20"
   db_name                                        = var.db_name
   db_version                                     = "21c"
   db_workload                                    = "AJD"
