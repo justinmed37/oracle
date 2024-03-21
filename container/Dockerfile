@@ -1,5 +1,9 @@
 FROM zauberzeug/nicegui
 
+# RUN apt-get update
+# RUN apt-get install -y wget curl
+# RUN wget https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh
+# RUN chmod +x install.sh && ./install.sh --accept-all-defaults
 
 COPY frontend frontend
 COPY start.sh frontend/start.sh
