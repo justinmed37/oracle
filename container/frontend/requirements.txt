@@ -1,1 +1,2 @@
 nicegui==1.4.18
+oracledb

@@ -43,5 +43,5 @@ jobs:
 
       - name: Docker Push
         run: | 
-          docker build -t "iad.ocir.io/idbjyurhyjpo/generic-bu/frontend:0-${{ github.event.number}}-dev" .
-          docker push "iad.ocir.io/idbjyurhyjpo/generic-bu/frontend:0-${{ github.event.number}}-dev"
+          docker build -t "iad.ocir.io/idbjyurhyjpo/generic-bu/frontend:1-${{ github.event.number}}-dev" .
+          docker push "iad.ocir.io/idbjyurhyjpo/generic-bu/frontend:1-${{ github.event.number}}-dev"
