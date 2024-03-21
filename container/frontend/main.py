@@ -1,7 +1,7 @@
 import pages
 import home_page
 import theme
-
+import os
 from nicegui import ui
 
 
@@ -17,6 +17,6 @@ pages.create()
 
 ui.run(
     title='OCI Cloud Infrastructure Demo',
-    port=8080,
+    port=os.environ.get("FRONTEND_PORT"),
     uvicorn_logging_level="info"
 )
