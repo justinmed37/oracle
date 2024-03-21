@@ -2,6 +2,7 @@ FROM zauberzeug/nicegui
 
 
 COPY frontend frontend
+COPY start.sh frontend/start.sh
 
 WORKDIR /app/frontend
 
