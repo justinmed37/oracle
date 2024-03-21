@@ -17,6 +17,6 @@ pages.create()
 
 ui.run(
     title='OCI Cloud Infrastructure Demo',
-    port=os.environ.get("FRONTEND_PORT"),
+    port=os.environ.get("HTTP_PORT"),
     uvicorn_logging_level="info"
 )
