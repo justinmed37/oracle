@@ -8,7 +8,7 @@ from nicegui import ui
 # here we use our custom page decorator directly and just put the content creation into a separate function
 @ui.page('/')
 def index_page() -> None:
-    with theme.frame('Homepage'):
+    with theme.frame('Oracle Cloud Infrastructure Demo'):
         home_page.content()
 
 
