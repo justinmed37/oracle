@@ -18,7 +18,7 @@ resource "oci_identity_policy" "container_repo" {
   name           = "generic-bu-container-repo"
   compartment_id = var.tenancy_ocid
   description    = "Policy to allow generic-bu-containers to authenticate"
-  statements     = [
+  statements = [
     "Allow dynamic-group ${local.group_name} to read repos in compartment ${var.compartment_name}",
     "Allow dynamic-group ${local.group_name} to read buckets in compartment ${var.compartment_name}",
     "Allow dynamic-group ${local.group_name} to read objects in compartment ${var.compartment_name}"
@@ -61,6 +61,7 @@ resource "oci_container_instances_container_instance" "frontend" {
     is_resource_principal_disabled = false
     working_directory              = "/app/frontend"
     command                        = ["./start.sh"]
+    environment_variables          = { "DB_USER" : "ADMIN" }
     # arguments                      = ["main.py"]
     resource_config {
       memory_limit_in_gbs = 4

@@ -19,4 +19,5 @@ def test():
             sql = """select sysdate from dual"""
             for r in cursor.execute(sql):
                 response.append(r)
-    return r
+    message = f'Database Connection Success! Sysdate {r}'
+    return message
