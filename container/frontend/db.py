@@ -3,7 +3,8 @@ import os
 # import cx_Oracle
 
 db_user = os.environ.get("DB_USER")
-db_password = os.environ.get("DB_PASSWORD")
+# db_password = os.environ.get("DB_PASSWORD")
+db_password = open("secret", "r").read()
 cs = """(description= (retry_count=2)(retry_delay=3)
     (address=(protocol=tcps)(port=1521)(host=ryenbxf5.adb.us-ashburn-1.oraclecloud.com))
     (connect_data=(service_name=g992c28d78bf6f1_t60f7j4t1f0bwxfp_medium.adb.oraclecloud.com))

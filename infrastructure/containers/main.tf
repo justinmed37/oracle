@@ -3,7 +3,9 @@ variable "compartment_id" {}
 variable "compartment_name" {}
 variable "prefix" {}
 
-
+locals {
+  group_name = oci_identity_dynamic_group.container_repo.name
+}
 # Dynamic group that will be used for identity policy
 resource "oci_identity_dynamic_group" "container_repo" {
   name           = "generic-bu-container-repo"
@@ -16,7 +18,11 @@ resource "oci_identity_policy" "container_repo" {
   name           = "generic-bu-container-repo"
   compartment_id = var.tenancy_ocid
   description    = "Policy to allow generic-bu-containers to authenticate"
-  statements     = ["Allow dynamic-group ${oci_identity_dynamic_group.container_repo.name} to read repos in compartment ${var.compartment_name}"]
+  statements     = [
+    "Allow dynamic-group ${local.group_name} to read repos in compartment ${var.compartment_name}",
+    "Allow dynamic-group ${local.group_name} to read buckets in compartment ${var.compartment_name}",
+    "Allow dynamic-group ${local.group_name} to read objects in compartment ${var.compartment_name}"
+  ]
 }
 
 resource "oci_artifacts_container_repository" "generic_frontend" {
@@ -48,14 +54,14 @@ resource "oci_container_instances_container_instance" "frontend" {
   vnics {
     subnet_id             = module.common.public_subnet_id
     is_public_ip_assigned = true
-    nsg_ids               = [ module.common.nsg_id ]
+    nsg_ids               = [module.common.nsg_id]
   }
   containers {
-    image_url                      = "iad.ocir.io/idbjyurhyjpo/generic-bu/frontend:0-6-dev"
+    image_url                      = "iad.ocir.io/idbjyurhyjpo/generic-bu/frontend:1-6-dev"
     is_resource_principal_disabled = false
     working_directory              = "/app/frontend"
-    command                        = ["python3"]
-    arguments                      = ["main.py"]
+    command                        = ["./start.sh"]
+    # arguments                      = ["main.py"]
     resource_config {
       memory_limit_in_gbs = 4
       vcpus_limit         = 1

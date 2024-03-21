@@ -21,6 +21,13 @@ resource "oci_core_network_security_group_security_rule" "nsg_security_rule" {
   }
 }
 
+resource "oci_objectstorage_bucket" "generic_bu" {
+  compartment_id = module.common.compartment_id
+  name           = "secrets"
+  namespace      = "idbjyurhyjpo"
+  versioning     = "Enabled"
+}
+
 # Create a private database in the public subnet that's accessible from the VCN
 resource "oci_database_autonomous_database" "oci_database_autonomous_database" {
   display_name                                   = "generic-bu-auto-db"
