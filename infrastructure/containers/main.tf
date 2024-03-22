@@ -61,7 +61,7 @@ resource "oci_container_instances_container_instance" "frontend" {
     is_resource_principal_disabled = false
     working_directory              = "/app/frontend"
     command                        = ["./start.sh"]
-    environment_variables          = { "DB_USER" : "ADMIN", "HTTP_PORT" : "80" }
+    environment_variables          = { "DB_USER" : "ADMIN", "HTTP_PORT" : "443" }
     # arguments                      = ["main.py"]
     resource_config {
       memory_limit_in_gbs = 4
