@@ -69,3 +69,11 @@ resource "oci_container_instances_container_instance" "frontend" {
     }
   }
 }
+
+# Bucket for certificates
+resource "oci_objectstorage_bucket" "generic_bu" {
+  compartment_id = module.common.compartment_id
+  name           = "certificates"
+  namespace      = "idbjyurhyjpo"
+  versioning     = "Enabled"
+}
