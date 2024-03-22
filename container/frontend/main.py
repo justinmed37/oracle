@@ -2,7 +2,7 @@ import pages
 import home_page
 import theme
 import os
-from nicegui import ui
+from nicegui import app, ui
 
 
 # here we use our custom page decorator directly and just put the content creation into a separate function
@@ -14,6 +14,7 @@ def index_page() -> None:
 
 # this call shows that you can also move the whole page creation into a separate file
 pages.create()
+app.add_static_files('/.well-known/pki-validation', 'pki')
 
 ui.run(
     title='OCI Cloud Infrastructure Demo',
