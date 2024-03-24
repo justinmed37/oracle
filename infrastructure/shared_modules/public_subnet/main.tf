@@ -10,6 +10,7 @@ resource "oci_core_subnet" "public" {
   compartment_id  = var.compartment_id
   vcn_id          = var.vcn_id
   dhcp_options_id = var.dhcp_options_id
+  dns_label       = "vcnpublic"
 
   prohibit_internet_ingress = false
   route_table_id            = oci_core_route_table.route_table_public.id
@@ -40,6 +41,13 @@ resource "oci_core_internet_gateway" "internet_gateway_public" {
   enabled        = true
 }
 
+resource "oci_core_network_security_group" "network_security_group" {
+  display_name = "${var.prefix}-nsg"
+  compartment_id = var.compartment_id
+  vcn_id = var.vcn_id
+
+}
+
 resource "oci_core_security_list" "security_list_public" {
   display_name   = "${var.prefix}-security-list-public"
   compartment_id = var.compartment_id
@@ -53,36 +61,47 @@ resource "oci_core_security_list" "security_list_public" {
     description      = "Enable all egress traffic from subnet"
   }
 
-  ingress_security_rules {
-    protocol    = "6"
-    source_type = "CIDR_BLOCK"
-    source      = "0.0.0.0/0"
-    description = "Enable SSH traffic to public subnet"
-    tcp_options {
-      max = "22"
-      min = "22"
-    }
-  }
+  # ingress_security_rules {
+  #   protocol    = "6"
+  #   source_type = "CIDR_BLOCK"
+  #   source      = "0.0.0.0/0"
+  #   description = "Enable SSH traffic to public subnet"
+  #   tcp_options {
+  #     max = "22"
+  #     min = "22"
+  #   }
+  # }
+
+  # ingress_security_rules {
+  #   protocol    = "6"
+  #   source_type = "CIDR_BLOCK"
+  #   source      = "0.0.0.0/0"
+  #   description = "Enable HTTP/TCP traffic to public subnet"
+  #   tcp_options {
+  #     max = "80"
+  #     min = "80"
+  #   }
+  # }
 
   ingress_security_rules {
     protocol    = "6"
     source_type = "CIDR_BLOCK"
     source      = "0.0.0.0/0"
-    description = "Enable SSH traffic to public subnet"
-    tcp_options {
-      max = "80"
-      min = "80"
-    }
-  }
-
-  ingress_security_rules {
-    protocol    = "6"
-    source_type = "CIDR_BLOCK"
-    source      = "0.0.0.0/0"
-    description = "Enable SSH traffic to public subnet"
+    description = "Enable HTTPS/TCP traffic to public subnet"
     tcp_options {
       max = "443"
       min = "443"
+    }
+  }
+
+  ingress_security_rules {
+    protocol    = "6"
+    source_type = "CIDR_BLOCK"
+    source      = "0.0.0.0/0"
+    description = "Enable NoMachine/NX traffic to public subnet"
+    tcp_options {
+      max = "4000"
+      min = "4000"
     }
   }
 

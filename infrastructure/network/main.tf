@@ -4,12 +4,14 @@ variable "vcn_prefix" {}
 variable "cidr_block" {}
 variable "public_cidr_block" {}
 variable "private_cidr_block" {}
+variable "dns_label" {}
 
 # Create the VCN
 resource "oci_core_vcn" "generic_bu_vcn" {
-  display_name   = "${var.vcn_prefix}network"
+  display_name   = "${var.vcn_prefix}-network"
   compartment_id = var.compartment_id
   cidr_block     = var.cidr_block
+  dns_label      = var.dns_label
 }
 
 # Create the public subnet
@@ -44,6 +46,6 @@ resource "oci_core_dhcp_options" "dhcp_options" {
 
   options {
     type                = "SearchDomain"
-    search_domain_names = ["genericbunetwor.oraclevcn.com"]
+    search_domain_names = ["genericbunetwork.oraclevcn.com"]
   }
 }

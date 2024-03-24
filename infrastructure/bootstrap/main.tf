@@ -18,18 +18,14 @@ resource "oci_objectstorage_bucket" "bootstrap_tfstate" {
 }
 
 resource "oci_identity_compartment" "generic_bu" {
-  # Required
   compartment_id = var.tenancy_ocid
   description    = "Compartment for generic business unit"
   name           = "generic_bu"
 }
 
 resource "oci_objectstorage_bucket" "generic_bu" {
-  # Required
   compartment_id = resource.oci_identity_compartment.generic_bu.id
   name           = "generic_bu_tfstate"
   namespace      = "idbjyurhyjpo"
-
-  # Optional
-  versioning = "Enabled"
+  versioning     = "Enabled"
 }
