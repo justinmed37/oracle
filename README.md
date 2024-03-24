@@ -8,33 +8,41 @@ This repository is my initial take at creating a source template with the follow
 1. Firewall (GeoFencing), HTTPS/SSL
 1. Observability (TBD) - Built in OCI features, datadog integration later
 
+## DevOps Demo
+
+[DevOps-Demo.com](https://devops-demo.com)
+
 ## Architecture
 
+### Infrastructure and Terraform
+Network and Application Infrastructure. The folder structure of the infrastructure is intended to provide an intuitive way to manage the systems infrastructure and architecture.
+
+1. **infrastructure/bootstrap** - Top level containers and buckets needed to bootstrap the remote terraform backend for each layer / component
+1. **infrastructure/shared_modules** - Re-usable modules used for sharing OCIDs across terraform states or simple patterns for constructing things like a public or private network
+1. **infrastructure/network** - VCN, Subnets, Security Lists, Network Security Groups, Routing, Internet Gateway, read (bucket|repo|object) dynamic group policy, 
+1. **infrastructure/container** - Application container repo, container instance, nsg policy, bucket, 
+1. **Infrastructure/database** - OCI Autonomous Database resource configured as AJD
+    - Configured for free tier, however the service supports ACID transactions
+
 ### Application - Container / Python
-1. Python Packages
+1. **Python Packages**
     - NiceGUI - This python library runs the web server on top of FastAPI
     - oracledb - This library enables us to interact with the OCI autonomous JSON db
     - oci-cli - Used during runtime to retrieve secrets and certificates from object storage
-1. Container Details
+1. **Container Details**
+    - **run_command**: container/frontend/start.sh
     - Container Registry - Uses OCI Container Registry
     - Build and Push - Integrated with GitHub actions to build and push to OCI CR
     - Dev Experience - This enables the developer to auto push changes to the repo, which can then be tested by restarting the container instance
-1. DRY Code
+1. **DRY Code**
     - Keep any environment configuration outside the source code and in secrets / env variables
     - Leverage object storage for static files and secrets
 
-### Infrastructure and Terraform
-Network and Application Infrastructure
-
-1. **infrastructure/bootstrap** - Top level containers and buckets needed to bootstrap the remote terraform backend
-1. **infrastructure/network** - VCN, Subnets, Security Lists, Network Security Groups, Routing, Internet Gateway
-1. **infrastructure/container** - 
-1. **Infrastructure/database**
 
 
-> CI/CD - GitHub Actions
+### Orchestraction and GitHub Actions
 
-## Notes
+## Developer Notes
 
 ### Setup User API Key
 
