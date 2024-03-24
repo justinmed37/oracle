@@ -1,5 +1,13 @@
-# oracle
-OCI infrastructure
+# OCI DevOps Template
+This repository is my initial take at creating a source template with the following:
+
+1. Oracle Cloud Infrastructure provider
+1. Python web application / API (NiceGUI/FastAPI)
+1. Autonomous JSON DB for suitability of ACID transactions
+1. IaaC managed with Terraform
+1. GitHub Actions integrate CI/CD with code change / PR process
+1. Firewall (GeoFencing), HTTPS/SSL
+
 
 ## Notes
 
