@@ -4,17 +4,33 @@ This repository is my initial take at creating a source template with the follow
 1. Oracle Cloud Infrastructure provider
 1. Python web application / API (NiceGUI/FastAPI)
 1. Autonomous JSON DB for suitability of ACID transactions
-1. IaaC managed with Terraform
-1. GitHub Actions integrate CI/CD with code change / PR process
+1. Infrastructure Orchestration Terraform and GitHub Actions
 1. Firewall (GeoFencing), HTTPS/SSL
+1. Observability (TBD) - Built in OCI features, datadog integration later
 
 ## Architecture
 
 ### Application - Container / Python
-> ###### NiceGUI / FastAPI / oracledb / oci-cli enable rapid integration
->> nicegui==1.4.18 oracledb oci-cli
+1. Python Packages
+    - NiceGUI - This python library runs the web server on top of FastAPI
+    - oracledb - This library enables us to interact with the OCI autonomous JSON db
+    - oci-cli - Used during runtime to retrieve secrets and certificates from object storage
+1. Container Details
+    - Container Registry - Uses OCI Container Registry
+    - Build and Push - Integrated with GitHub actions to build and push to OCI CR
+    - Dev Experience - This enables the developer to auto push changes to the repo, which can then be tested by restarting the container instance
+1. DRY Code
+    - Keep any environment configuration outside the source code and in secrets / env variables
+    - Leverage object storage for static files and secrets
 
-> Infrastructure - Terraform
+### Infrastructure and Terraform
+Network and Application Infrastructure
+
+1. **infrastructure/bootstrap** - Top level containers and buckets needed to bootstrap the remote terraform backend
+1. **infrastructure/network** - VCN, Subnets, Security Lists, Network Security Groups, Routing, Internet Gateway
+1. **infrastructure/container** - 
+1. **Infrastructure/database**
+
 
 > CI/CD - GitHub Actions
 
