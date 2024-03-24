@@ -24,7 +24,7 @@ ui.run(
     title='OCI Cloud Infrastructure Demo',
     port=int(os.environ.get("HTTP_PORT")),
     uvicorn_logging_level="info",
-    kwargs={"ssl_context": ssl_context}
+    kwargs={"ssl": ssl_context}
     # ssl_certfile="/app/frontend/ca_bundle.pem",
     # ssl_keyfile="/app/frontend/private.pem",
 )
