@@ -8,6 +8,15 @@ This repository is my initial take at creating a source template with the follow
 1. GitHub Actions integrate CI/CD with code change / PR process
 1. Firewall (GeoFencing), HTTPS/SSL
 
+## Architecture
+
+### Application - Container / Python
+> ###### NiceGUI / FastAPI / oracledb / oci-cli enable rapid integration
+>> nicegui==1.4.18 oracledb oci-cli
+
+> Infrastructure - Terraform
+
+> CI/CD - GitHub Actions
 
 ## Notes
 
