@@ -32,4 +32,9 @@ ui.run_with(server)
 #     # ssl_keyfile="/app/frontend/private.pem",
 # )
 
-uvicorn.run(server, host='0.0.0.0', port=443)
+# uvicorn.run(server, port=int(os.environ.get("HTTP_PORT")), ssl=ssl_context)
+uvicorn.run(server,
+    port=int(os.environ.get("HTTP_PORT")),
+    ssl_certfile="/app/frontend/ca_bundle.pem",
+    ssl_keyfile="/app/frontend/private.pem"
+)
