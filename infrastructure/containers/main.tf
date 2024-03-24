@@ -70,6 +70,21 @@ resource "oci_container_instances_container_instance" "frontend" {
   }
 }
 
+# Network Security Group rule belongs here with the database infrastructure
+resource "oci_core_network_security_group_security_rule" "nsg_security_rule" {
+  network_security_group_id = module.common.nsg_id
+  direction                 = "INGRESS"
+  protocol                  = "6"
+  source                    = "0.0.0.0/0"
+  source_type               = "CIDR_BLOCK"
+  tcp_options {
+    destination_port_range {
+      max = "443"
+      min = "443"
+    }
+  }
+}
+
 # Bucket for certificates
 resource "oci_objectstorage_bucket" "generic_bu" {
   compartment_id = module.common.compartment_id

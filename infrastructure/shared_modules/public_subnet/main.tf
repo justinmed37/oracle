@@ -61,27 +61,27 @@ resource "oci_core_security_list" "security_list_public" {
     description      = "Enable all egress traffic from subnet"
   }
 
-  ingress_security_rules {
-    protocol    = "6"
-    source_type = "CIDR_BLOCK"
-    source      = "0.0.0.0/0"
-    description = "Enable SSH traffic to public subnet"
-    tcp_options {
-      max = "22"
-      min = "22"
-    }
-  }
+  # ingress_security_rules {
+  #   protocol    = "6"
+  #   source_type = "CIDR_BLOCK"
+  #   source      = "0.0.0.0/0"
+  #   description = "Enable SSH traffic to public subnet"
+  #   tcp_options {
+  #     max = "22"
+  #     min = "22"
+  #   }
+  # }
 
-  ingress_security_rules {
-    protocol    = "6"
-    source_type = "CIDR_BLOCK"
-    source      = "0.0.0.0/0"
-    description = "Enable HTTP/TCP traffic to public subnet"
-    tcp_options {
-      max = "80"
-      min = "80"
-    }
-  }
+  # ingress_security_rules {
+  #   protocol    = "6"
+  #   source_type = "CIDR_BLOCK"
+  #   source      = "0.0.0.0/0"
+  #   description = "Enable HTTP/TCP traffic to public subnet"
+  #   tcp_options {
+  #     max = "80"
+  #     min = "80"
+  #   }
+  # }
 
   ingress_security_rules {
     protocol    = "6"
