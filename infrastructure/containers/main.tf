@@ -47,6 +47,7 @@ resource "oci_container_instances_container_instance" "frontend" {
   availability_domain = data.oci_identity_availability_domains.local_ads.availability_domains.0.name
   compartment_id      = module.common.compartment_id
   shape               = "CI.Standard.E4.Flex"
+  state               = "ACTIVE"
   shape_config {
     ocpus         = 1
     memory_in_gbs = 4
@@ -57,7 +58,7 @@ resource "oci_container_instances_container_instance" "frontend" {
     nsg_ids               = [module.common.nsg_id]
   }
   containers {
-    image_url                      = "iad.ocir.io/idbjyurhyjpo/generic-bu/frontend:1-6-dev"
+    image_url                      = "iad.ocir.io/idbjyurhyjpo/generic-bu/frontend:1-8-dev"
     is_resource_principal_disabled = false
     working_directory              = "/app/frontend"
     command                        = ["./start.sh"]

@@ -24,13 +24,31 @@ Network and Application Infrastructure. The folder structure of the infrastructu
 1. **Infrastructure/database** - OCI Autonomous Database resource configured as AJD
     - Configured for free tier, however the service supports ACID transactions
 
+### Network and Security
+1. **VCN**
+    - Two Subnets one public one private (private unused atm)
+    - Employs Network Security Lists and Network Security Groups
+    - Currently exposed ports: 443 (HTTPS), 4000 (NoMachineNX), 1521 (Internally, for AJD)
+    - Routing is simple, intenet gateway goes directly to the public subnet
+    - Additionally, the AJD is configured as PRIVATE, only connections from the VCN are allowed
+1. **Load Balancer**
+    - Backend set points to the running container internal IP on 10.0.1.0/24
+    - Listener configured on port 443 for HTTPS
+    - Certificates uploaded to certificate service, obtained from sslforfree
+    - Hostname set to devops-demo.com
+1. **Web Application Firewall**
+    - Default policy reject all
+    - Reject country != "United States"
+    - Accept country == "United States"
+
+
 ### Application - Container / Python
 1. **Python Packages**
     - NiceGUI - This python library runs the web server on top of FastAPI
     - oracledb - This library enables us to interact with the OCI autonomous JSON db
     - oci-cli - Used during runtime to retrieve secrets and certificates from object storage
 1. **Container Details**
-    - **run_command**: container/frontend/start.sh
+    - **run_command**: ```container/frontend/start.sh```
     - Container Registry - Uses OCI Container Registry
     - Build and Push - Integrated with GitHub actions to build and push to OCI CR
     - Dev Experience - This enables the developer to auto push changes to the repo, which can then be tested by restarting the container instance
@@ -40,9 +58,20 @@ Network and Application Infrastructure. The folder structure of the infrastructu
 
 
 
-### Orchestraction and GitHub Actions
+### Orchestration and GitHub Actions
+
+1. **.github/workflows/container.yaml** - Container Builder
+    - Automatically runs when pushing changes into an open PR against MAIN
+    - Uses an auth token to authenticate with oci container repository
+1. **.github/workflows/tf_changes.yaml** - Infrastructure Orchestration for Terraform
+    - Automatically runs when pushing changes into an open PR against MAIN
+    - Checks terraform directories for changes to files to determine which components to run
+    - Performs several sanity checks and integrates with the GitHub bot to summarize results in the PR
+    - Sanity checks are integrated with GitHub to prevent merging a PR with failing checks
+    - Currently it's limited to generating plans, as there are quite a few additional features needed before it's ready to automatically apply all the terraform
 
 ## Developer Notes
+Under Construction.
 
 ### Setup User API Key
 
