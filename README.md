@@ -25,18 +25,18 @@ Network and Application Infrastructure. The folder structure of the infrastructu
     - Configured for free tier, however the service supports ACID transactions
 
 ### Network and Security
-1. VCN
+1. **VCN**
     - Two Subnets one public one private (private unused atm)
     - Employs Network Security Lists and Network Security Groups
     - Currently exposed ports: 443 (HTTPS), 4000 (NoMachineNX), 1521 (Internally, for AJD)
     - Routing is simple, intenet gateway goes directly to the public subnet
     - Additionally, the AJD is configured as PRIVATE, only connections from the VCN are allowed
-1. Load Balancer
+1. **Load Balancer**
     - Backend set points to the running container internal IP on 10.0.1.0/24
     - Listener configured on port 443 for HTTPS
     - Certificates uploaded to certificate service, obtained from sslforfree
     - Hostname set to devops-demo.com
-1. Web Application Firewall
+1. **Web Application Firewall**
     - Default policy reject all
     - Reject country != "United States"
     - Accept country == "United States"
