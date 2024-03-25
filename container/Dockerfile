@@ -11,4 +11,4 @@ WORKDIR /app/frontend
 RUN python3 -m pip install --upgrade pip wheel
 RUN python3 -m pip install --no-cache-dir --upgrade -r requirements.txt
 
-ENV OCI_CLI_AUTH=resource_principal LOCAL_DEBUG=false
+ENV OCI_CLI_AUTH=resource_principal
