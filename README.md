@@ -40,7 +40,17 @@ Network and Application Infrastructure. The folder structure of the infrastructu
 
 
 
-### Orchestraction and GitHub Actions
+### Orchestration and GitHub Actions
+
+1. **.github/workflows/container.yaml** - Container Builder
+    - Automatically runs when pushing changes into an open PR against MAIN
+    - Uses an auth token to authenticate with oci container repository
+1. **.github/workflows/tf_changes.yaml** - Infrastructure Orchestration for Terraform
+    - Automatically runs when pushing changes into an open PR against MAIN
+    - Checks terraform directories for changes to files to determine which components to run
+    - Performs several sanity checks and integrates with the GitHub bot to summarize results in the PR
+    - Sanity checks are integrated with GitHub to prevent merging a PR with failing checks
+    - Currently it's limited to generating plans, as there are quite a few additional features needed before it's ready to automatically apply all the terraform
 
 ## Developer Notes
 
