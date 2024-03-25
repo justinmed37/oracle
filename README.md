@@ -30,7 +30,7 @@ Network and Application Infrastructure. The folder structure of the infrastructu
     - oracledb - This library enables us to interact with the OCI autonomous JSON db
     - oci-cli - Used during runtime to retrieve secrets and certificates from object storage
 1. **Container Details**
-    - **run_command**: container/frontend/start.sh
+    - **run_command**: ```container/frontend/start.sh```
     - Container Registry - Uses OCI Container Registry
     - Build and Push - Integrated with GitHub actions to build and push to OCI CR
     - Dev Experience - This enables the developer to auto push changes to the repo, which can then be tested by restarting the container instance
