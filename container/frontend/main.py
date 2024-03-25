@@ -9,7 +9,7 @@ import ssl
 # here we use our custom page decorator directly and just put the content creation into a separate function
 @ui.page('/')
 def index_page() -> None:
-    with theme.frame('Oracle Cloud Infrastructure Demo'):
+    with theme.frame('DevOps Demo'):
         home_page.content()
 
 
@@ -17,7 +17,7 @@ def index_page() -> None:
 pages.create()
 
 ui.run(
-    title='OCI Cloud Infrastructure Demo',
+    title='DevOps Demo',
     port=int(os.environ.get("HTTP_PORT")),
     uvicorn_logging_level="info",
     ssl_certfile="/app/frontend/certificate.pem",
