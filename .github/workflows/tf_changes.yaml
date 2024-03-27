@@ -77,12 +77,20 @@ jobs:
         id: tf_output
         working-directory: ${{ env.TERRAFORM_DIR }}
         run: |
-          if terraform output -json data > data.json 2>&1; then
+          if terraform output -json data > model.json 2>&1; then
             echo "output-outcome=success" >> $GITHUB_OUTPUT
-            cat data.json
+            cat model.json
           else
             echo "output-outcome=failure" >> $GITHUB_OUTPUT
           fi
+
+      - name: Upload Data Model
+        uses: oracle-actions/run-oci-cli-command@v1.1.1
+        id: upload-latest
+        working-directory: ${{ env.TERRAFORM_DIR }}
+        with:
+          # command: 'iam compartment list --compartment-id-in-subtree=true'
+          command: 'os object put -bn infrastructure_model --file data.json'
 
 
 
