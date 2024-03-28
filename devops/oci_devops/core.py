@@ -23,10 +23,10 @@ import oci
 
 config = {}
 signer = {}
-tenancy = ""
+tenancy = environ.get('TENANCY_ID', None)
 
 # This resource principal code is untested yet, placeholder until needed
-if environ.get('RESOURCE_PRINCIPAL', None) is not None and environ.get('TENANCY_ID', None) is not None:
+if environ.get('RESOURCE_PRINCIPAL', None) is not None and tenancy is not None:
     # Create a Response Pricipals signer
     print("=" * 80)
     print("Intializing new signer")
@@ -51,24 +51,3 @@ else:
 #       ...I just made that up.
 f = open('model.tmp.json')
 model = json.load(f)
-
-
-# deleteme
-# print(json.dumps(model['containers'], sort_keys=True, indent=2))
-
-
-def container(config, id):
-    #import pdb;pdb.set_trace()
-    client =  oci.container_instances.ContainerInstanceClient(config)
-    container = client.get_container_instance(id)
-    print(container.data)
-
-
-# Get the container ID from the terraform model
-container_id = model['containers'][0]["items"][0]["id"]
-
-# deleteme
-print(f"Container ID: {container_id}")
-
-# run oci container client
-container(config, container_id)

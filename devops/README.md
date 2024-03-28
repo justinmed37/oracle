@@ -24,6 +24,16 @@ Technically this whole thing could be done in github actions.
 
 However, I'm going with oci functions in order to expand on the capabilities of this platform and it's OCI integrations.
 
+## Feature Notes
+
+1. Client pattern defined in oci_devops/container/* and oci_devops/core.py
+1. Commands can now be executed like this:
+    - ```python -m oci_devops.container.get```
+    - ```python -m oci_devops.container.start```
+    - ```python -m oci_devops.container.stop```
+1. Currently this auto-targets the one container we have defined in our infrastructure
+    - More logic and targetting parameters likely to come later
+
 ## Notes
 
 1. To run the container localy with users .oci/config do:
