@@ -33,6 +33,7 @@ However, I'm going with oci functions in order to expand on the capabilities of 
     - ```python -m oci_devops.container.stop```
 1. Currently this auto-targets the one container we have defined in our infrastructure
     - More logic and targetting parameters likely to come later
+1. These python module can now also be used like entry point targets for containers or functions!!!
 
 ## Notes
 
