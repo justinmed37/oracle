@@ -1,7 +1,7 @@
 from os import environ
 import json
 import oci
-
+from .log import logger
 
 # Relevant environment variables:
 # REQUIRED:
@@ -25,29 +25,22 @@ config = {}
 signer = {}
 tenancy = environ.get('TENANCY_ID', None)
 
+
+logger.info(f"INIT_OCI_DEVOPS")
 # This resource principal code is untested yet, placeholder until needed
 if environ.get('RESOURCE_PRINCIPAL', None) is not None and tenancy is not None:
     # Create a Response Pricipals signer
-    print("=" * 80)
-    print("Intializing new signer")
+    logger.info(f"INIT_RESOURCE_PRINCIPAL_SIGNER")
     signer = oci.auth.signers.get_resource_principals_signer()
-
-    # Print the Resource Principal Security Token
-    # This step is not required to use the signer, it just shows that the security
-    # token can be retrieved from the signer.
-    print("=" * 80)
-    print("Resource Principal Security Token")
-    print(signer.get_security_token())
+    logger.debug(f"RESOURCE_PRINCIPAL_SECURITY_TOKEN: {signer.get_security_token()}")
 else:
+    # Use the config file to authenticate
+    logger.info(f"INIT_LOCAL_CONFIG")
     config = oci.config.from_file()
     tenancy = config["tenancy"]
+    logger.debug(f"OCI_CLI_CONFIG: {config}")
 
 
-
-# Initially had WAY more code here trying to extract all the OCIDs from the tenancy
-#      ...that was no fun.
-#
-# New method extracts everything via TRANS_TERRAFORM_PYTHON_ALCHEMY
-#       ...I just made that up.
+# Open our Infrastructure Model computed from our Terraform
 f = open('model.tmp.json')
 model = json.load(f)
