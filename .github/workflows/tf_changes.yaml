@@ -97,7 +97,7 @@ jobs:
         # working-directory: ${{ env.TERRAFORM_DIR }}
         with:
           # command: 'iam compartment list --compartment-id-in-subtree=true'
-          command: 'os object put -bn infrastructure_model --file infrastructure/map/model.json'
+          command: 'os object put -bn infrastructure_model --file infrastructure/map/model.json --force'
 
 
 
