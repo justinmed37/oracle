@@ -6,10 +6,22 @@
 # That map will then simplify the process of finding / selecting the
 #     correct ocids of the resources we need to target for devops
 
-module "common" {
+module "common_data" {
+  source = "../shared_modules/common"
+}
+
+module "network" {
   source = "../shared_modules/common/network"
 }
 
+module "containers" {
+  source = "../shared_modules/common/containers"
+}
+
 output "data" {
-  value = module.common
+  value = {
+    common_data = module.common_data
+    network = module.network
+    containers = module.containers
+  }
 }
