@@ -1,39 +1,43 @@
 # Tools for OCI DevOps
 
-The initial use case for devops tools is:
+> Moved lots of design content that was here to the PR: https://github.com/justinmed37/oracle/pull/9
 
-- Cost Savings - Currently the demo is running 24hrs
-    - OCI Functions: Write a function capable of stopping / starting infrastructure
-    - Write a GitHub actions job that invokes the Function to start / stop on a schedule
+## Genesis
 
-## Approach
+This is the proposed DevOPS solution - emphasis on Operations is intentional.
 
-1. Starting with terraform
-    - Create a special terraform that generates a data model of our infrastructure
-    - Publish this terraform map as the final step in our terraform workflow
-1. Python
-    - Create a container that supports local development / authentication AND remote execution
-    - Consume the data model published in object storage
-    - The model enables us to access the ocids without iterating over all the OCI APIs listing things
-    - Publish a container with database and container start/stop
-1. GitHub Actions
-    - Define the cron-style job here, as OCI has no native schedulers for functions
-    - Executes the function to start / stop resources as defined
+There are a multitude of use cases for building automation capable of making dynamic changes to infrastructure.
 
-Technically this whole thing could be done in github actions.
+Where **Terraform** is the blueprint of our Software Defined Architecture...
+...the ***DevOPS*** system transforms those blueprints into easily-managed components
 
-However, I'm going with oci functions in order to expand on the capabilities of this platform and it's OCI integrations.
+...
 
-## Feature Notes
+Put more simply, it's a **"devops worker"**, that can be scheduled, or programmed, to do **"things"** a DevOps Engineer would normally be needed for.
 
-1. Client pattern defined in oci_devops/container/* and oci_devops/core.py
-1. Commands can now be executed like this:
-    - ```python -m oci_devops.container.get```
-    - ```python -m oci_devops.container.start```
-    - ```python -m oci_devops.container.stop```
-1. Currently this auto-targets the one container we have defined in our infrastructure
-    - More logic and targetting parameters likely to come later
-1. These python module can now also be used like entry point targets for containers or functions!!!
+**Like...**
+- Turning the lights out when we "leave for the day" - aka shut off dev resources that cost money
+    - Containers
+    - Databases
+
+## Primary Use Cases
+
+1. **DevOps Operator**
+    - Whoever is operating the infrastructure, needs a straight-forward, simple, development environment from which to perform their daily operations.
+    - I want to discontinue using the UI for prototyping, but the API and Terraform are still clunky for rapid work. This fills a huge need both in prototyping, and vastly simplified engineer onboarding
+1. **DevOps Autobot**
+    - Application components are exposed as automation "friendly" functions
+    - Enables Developers to write simple and intuitive policies for managing their components
+    - Uses:
+        - Start/Stop resources based on schedules
+        - Automate disaster recovery scenarios (changing load balancer configs, etc...)
+        - Scale resources based on metrics
+
+
+## Current State
+There are two **runtime** modes for this tool set.
+
+- Local: Runs in a local docker container for development
 
 ## Notes
 
