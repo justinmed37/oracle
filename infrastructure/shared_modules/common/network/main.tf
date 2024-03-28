@@ -44,7 +44,7 @@ locals {
   }
 }
 
-output "data_model" {
+output "data" {
   value = local.output_data
 }
 

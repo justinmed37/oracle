@@ -20,8 +20,8 @@ module "containers" {
 
 output "data" {
   value = {
-    common_data = module.common_data
-    network = module.network
-    containers = module.containers
+    common_data = module.common_data.data
+    network     = module.network.data
+    containers  = module.containers.data
   }
 }
