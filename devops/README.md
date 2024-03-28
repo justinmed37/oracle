@@ -37,7 +37,9 @@ Put more simply, it's a **"devops worker"**, that can be scheduled, or programme
 ## Current State
 There are two **runtime** modes for this tool set.
 
-- Local: Runs in a local docker container for development
+- Local: Runs in a local docker container for development. Uses individual user ~/.oci/config.
+- Remote: Runs in a container or function in OCI. Uses resource principal auth.
+    - These Remote functions will primarily be called / invoked from GitHub Actions
 
 ## Notes
 
