@@ -18,10 +18,15 @@ module "containers" {
   source = "../shared_modules/common/containers"
 }
 
+module "auto_dbs" {
+  source = "../shared_modules/common/databases"
+}
+
 output "data" {
   value = {
     common_data = module.common_data.data
     network     = module.network.data
     containers  = module.containers.data
+    auto_dbs    = module.auto_dbs.data
   }
 }
