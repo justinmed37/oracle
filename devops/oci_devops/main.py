@@ -1,5 +1,7 @@
-import oci
 from os import environ
+import json
+import oci
+
 
 # Relevant environment variables:
 # REQUIRED:
@@ -41,77 +43,15 @@ else:
     tenancy = config["tenancy"]
 
 
-namespace = environ.get('NAMESPACE')
-os_client = oci.object_storage.ObjectStorageClient(config)
-print(f"Namespace: {os_client.get_namespace().data}")
-bucket = os_client.get_bucket(
-    namespace_name=os_client.get_namespace().data,
-    bucket_name="infrastructure_model"
-)
-print(dir(bucket))
-print(bucket.data)
-model = os_client.get_object(
-    namespace_name=os_client.get_namespace().data,
-    bucket_name='infrastructure_model',
-    object_name='model.json')
 
-import pdb;pdb.set_trace()
-print(dir(model))
-print(f"{model.data}")
+# Initially had WAY more code here trying to extract all the OCIDs from the tenancy
+#      ...that was no fun.
+#
+# New method extracts everything via TRANS_TERRAFORM_PYTHON_ALCHEMY
+#       ...I just made that up.
 
+f = open('model.json')
+model = json.load(f)
 
-def identity(config, tenancy, filter):
-    client = oci.identity.IdentityClient(config)
-    compartments = client.list_compartments(tenancy)
-
-    for each in compartments.data:
-        if each.name == filter:
-            compartment = each
-
-    # print(f"Compartments: {compartments.data}")
-    return client, compartment
-
-def network(config, compartment_id, target):
-    client = oci.core.VirtualNetworkClient(config)
-    vcns = client.list_vcns(compartment_id)
-    # Formulate the target name (tn) as it appears in infrastructure/network/main.py for the vcn
-    tn = f"{target}-network" # In this case it will look like "generic-bu-network", the vcn name
-
-    # Loop through and get our target vcn
-    for each in vcns.data:
-        if each.display_name == tn:
-            vcn = each
-  
-    subnets = client.list_subnets(compartment_id)
-    #print(subnets.data)
-
-    return vcn, subnets.data
-
-# if environ.get('ALIAS_TARGET') is not None:
-#     ident, compartment = identity(config, tenancy, environ.get('ALIAS_TARGET'))
-# else:
-#     ident, compartment = identity(config, tenancy, environ.get('APPLICATION_TARGET'))
-
-
-
-# print(f"Application Compartment: {compartment.id}")
-# print(f"{compartment}")
-
-# target = environ.get('APPLICATION_TARGET')
-
-# vcn, subnets = network(config, compartment.id, target)
-
-# print(f"VCN_ID: {vcn.id}")
-# print(f"{vcn}\n\n")
-
-# print("=" * 80)
-# print("SUBNETS")
-# print("=" * 80)
-
-# for each in subnets:
-#     print(f"ID: {each.id}")
-#     print(f"DISPLAY_NAME: {each.display_name}")
-#     print(f"CIDR_BLOCK: {each.cidr_block}")
-#     print("=" * 80)
-
-# # subnets(config, compartment)
+# who is json and why do they dump all the time???
+print(json.dumps(model, sort_keys=True, indent=2))

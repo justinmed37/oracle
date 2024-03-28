@@ -1,3 +1,6 @@
+# Super local ignores
+**.tmp.json
+
 # Local .terraform directories
 **/.terraform/*
 
