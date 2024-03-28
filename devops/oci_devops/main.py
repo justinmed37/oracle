@@ -50,7 +50,7 @@ else:
 # New method extracts everything via TRANS_TERRAFORM_PYTHON_ALCHEMY
 #       ...I just made that up.
 
-f = open('model.json')
+f = open('model.tmp.json')
 model = json.load(f)
 
 # who is json and why do they dump all the time???
