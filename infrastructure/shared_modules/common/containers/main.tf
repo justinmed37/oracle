@@ -12,3 +12,13 @@ data "oci_container_instances_container_instances" "instances" {
 output "data" {
   value = data.oci_container_instances_container_instances.instances.container_instance_collection
 }
+
+terraform {
+  required_version = ">= 1.7.4"
+  required_providers {
+    oci = {
+      version = "5.35.0"
+      source  = "oracle/oci"
+    }
+  }
+}

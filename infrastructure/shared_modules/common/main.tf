@@ -19,3 +19,13 @@ output "data" {
     compartment_id   = data.oci_identity_compartments.root.compartments[0].id
   }
 }
+
+terraform {
+  required_version = ">= 1.7.4"
+  required_providers {
+    oci = {
+      version = "5.35.0"
+      source  = "oracle/oci"
+    }
+  }
+}

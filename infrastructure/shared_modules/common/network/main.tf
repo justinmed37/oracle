@@ -1,3 +1,7 @@
+module "common" {
+  source = "../"
+}
+
 
 locals {
   tenancy_id       = "ocid1.tenancy.oc1..aaaaaaaaiutrjzaumegnunzwoqhngqcwnewh2ptjd4jqhqk6ovs47uqlso3a"
@@ -68,4 +72,14 @@ output "public_subnet_id" {
 
 output "nsg_id" {
   value = data.oci_core_network_security_groups.nsg.network_security_groups[0].id
+}
+
+terraform {
+  required_version = ">= 1.7.4"
+  required_providers {
+    oci = {
+      version = "5.35.0"
+      source  = "oracle/oci"
+    }
+  }
 }

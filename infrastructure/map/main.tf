@@ -30,3 +30,13 @@ output "data" {
     auto_dbs    = module.auto_dbs.data
   }
 }
+
+terraform {
+  required_version = ">= 1.7.4"
+  required_providers {
+    oci = {
+      version = "5.35.0"
+      source  = "oracle/oci"
+    }
+  }
+}
