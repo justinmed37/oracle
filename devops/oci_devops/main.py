@@ -26,7 +26,7 @@ signer = {}
 tenancy = ""
 
 # This resource principal code is untested yet, placeholder until needed
-if environ.get('RESOURCE_PRINCIPAL') is not None and environ.get('TENANCY_ID') is not None:
+if environ.get('RESOURCE_PRINCIPAL', None) is not None and environ.get('TENANCY_ID', None) is not None:
     # Create a Response Pricipals signer
     print("=" * 80)
     print("Intializing new signer")
