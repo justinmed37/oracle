@@ -3,6 +3,7 @@ from os import environ
 
 # Relevant environment variables:
 # REQUIRED:
+#   NAMESPACE: Tenancy namespace
 #   APPLICATION_TARGET: This is the friendly name of your projects "root" compartment.
 #       In this case, it will be "generic-bu"
 #   ALIAS_TARGET: Backwards compatability for some naming stuff I need to refactor to fix
@@ -40,6 +41,24 @@ else:
     tenancy = config["tenancy"]
 
 
+namespace = environ.get('NAMESPACE')
+os_client = oci.object_storage.ObjectStorageClient(config)
+print(f"Namespace: {os_client.get_namespace().data}")
+bucket = os_client.get_bucket(
+    namespace_name=os_client.get_namespace().data,
+    bucket_name="infrastructure_model"
+)
+print(dir(bucket))
+print(bucket.data)
+model = os_client.get_object(
+    namespace_name=os_client.get_namespace().data,
+    bucket_name='infrastructure_model',
+    object_name='model.json')
+
+import pdb;pdb.set_trace()
+print(dir(model))
+print(f"{model.data}")
+
 
 def identity(config, tenancy, filter):
     client = oci.identity.IdentityClient(config)
@@ -68,31 +87,31 @@ def network(config, compartment_id, target):
 
     return vcn, subnets.data
 
-if environ.get('ALIAS_TARGET') is not None:
-    ident, compartment = identity(config, tenancy, environ.get('ALIAS_TARGET'))
-else:
-    ident, compartment = identity(config, tenancy, environ.get('APPLICATION_TARGET'))
+# if environ.get('ALIAS_TARGET') is not None:
+#     ident, compartment = identity(config, tenancy, environ.get('ALIAS_TARGET'))
+# else:
+#     ident, compartment = identity(config, tenancy, environ.get('APPLICATION_TARGET'))
 
 
 
-print(f"Application Compartment: {compartment.id}")
-print(f"{compartment}")
+# print(f"Application Compartment: {compartment.id}")
+# print(f"{compartment}")
 
-target = environ.get('APPLICATION_TARGET')
+# target = environ.get('APPLICATION_TARGET')
 
-vcn, subnets = network(config, compartment.id, target)
+# vcn, subnets = network(config, compartment.id, target)
 
-print(f"VCN_ID: {vcn.id}")
-print(f"{vcn}\n\n")
+# print(f"VCN_ID: {vcn.id}")
+# print(f"{vcn}\n\n")
 
-print("=" * 80)
-print("SUBNETS")
-print("=" * 80)
+# print("=" * 80)
+# print("SUBNETS")
+# print("=" * 80)
 
-for each in subnets:
-    print(f"ID: {each.id}")
-    print(f"DISPLAY_NAME: {each.display_name}")
-    print(f"CIDR_BLOCK: {each.cidr_block}")
-    print("=" * 80)
+# for each in subnets:
+#     print(f"ID: {each.id}")
+#     print(f"DISPLAY_NAME: {each.display_name}")
+#     print(f"CIDR_BLOCK: {each.cidr_block}")
+#     print("=" * 80)
 
-# subnets(config, compartment)
+# # subnets(config, compartment)

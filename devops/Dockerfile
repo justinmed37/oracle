@@ -6,4 +6,4 @@ COPY requirements.txt ./
 COPY oci_devops ./
 
 RUN pip install --no-cache-dir -r requirements.txt
-ENV APPLICATION_TARGET=generic-bu ALIAS_TARGET=generic_bu
+ENV APPLICATION_TARGET=generic-bu ALIAS_TARGET=generic_bu NAMESPACE=idbjyurhyjpo
