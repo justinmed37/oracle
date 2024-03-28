@@ -1,3 +1,7 @@
+module "common" {
+  source = "../"
+}
+
 
 locals {
   tenancy_id       = "ocid1.tenancy.oc1..aaaaaaaaiutrjzaumegnunzwoqhngqcwnewh2ptjd4jqhqk6ovs47uqlso3a"
@@ -24,17 +28,35 @@ data "oci_core_subnets" "subnet_public" {
   vcn_id         = local.vcn_id
 }
 
+data "oci_core_subnets" "subnets" {
+  compartment_id = local.compartment_id
+  vcn_id         = local.vcn_id
+}
+
 data "oci_core_network_security_groups" "nsg" {
   compartment_id = local.compartment_id
   vcn_id         = data.oci_core_vcns.vcn.virtual_networks[0].id
 }
 
+locals {
+  output_data = {
+    tenancy_id = local.tenancy_id
+    compartment_id = data.oci_identity_compartments.root.compartments[0].id
+    vcn = data.oci_core_vcns.vcn.virtual_networks[0]
+    subnets = data.oci_core_subnets.subnets.subnets
+    nsgs = data.oci_core_network_security_groups.nsg.network_security_groups
+  }
+}
 
-output "tenancy_id" {
-  value = local.tenancy_id
+output "data" {
+  value = local.output_data
 }
 
 
+# Old outputs
+output "tenancy_id" {
+  value = local.tenancy_id
+}
 
 output "compartment_id" {
   value = data.oci_identity_compartments.root.compartments[0].id
@@ -50,4 +72,14 @@ output "public_subnet_id" {
 
 output "nsg_id" {
   value = data.oci_core_network_security_groups.nsg.network_security_groups[0].id
+}
+
+terraform {
+  required_version = ">= 1.7.4"
+  required_providers {
+    oci = {
+      version = "5.35.0"
+      source  = "oracle/oci"
+    }
+  }
 }
